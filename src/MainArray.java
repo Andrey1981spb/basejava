@@ -2,10 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Interactive test for ArrayStorage implementation
- * (just run, no need to understand)
- */
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
@@ -23,7 +19,9 @@ public class MainArray {
             if (params.length == 2) {
                 uuid = params[1].intern();
             }
+
             switch (params[0]) {
+
                 case "list":
                     printAll();
                     break;
@@ -36,12 +34,12 @@ public class MainArray {
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
+                case "get":
+                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    break;
                 case "delete":
                     ARRAY_STORAGE.delete(uuid);
                     printAll();
-                    break;
-                case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
