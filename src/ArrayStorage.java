@@ -1,31 +1,32 @@
 
 public class ArrayStorage {
     Resume[] storage = new Resume[5];
-    int f = 0;
-    int c = 0;
+    int startPointForSave = 0;
+    int startPointForDelete = 0;
+
 
     void clear() {
-        int j;
-        for (j = 0; j < storage.length; j++) {
-            storage[j] = null;
+        for (int i = 0; i < storage.length; i++) {
+            storage[i] = null;
         }
     }
 
     void save(Resume r) {
-            for (int i = f; i < storage.length; i++) {
-                if (storage[i]==null) {
-                    storage[i] = r;
-                    break;
+        Resume[] resume_not_empty = this.getAll();
+        for (int i = startPointForSave; i < resume_not_empty.length + 1; i++) {
+            if (storage[i] == null) {
+                storage[i] = r;
+                break;
             }
         }
     }
 
     Resume get(String uuid) {
-        int j;
-        for (j = 0; j < storage.length; j++) {
-            if (storage[j] != null) {
-                if (storage[j].uuid == uuid) {
-                    return storage[j];
+        Resume[] resume_not_empty = this.getAll();
+        for (int i = 0; i < resume_not_empty.length + 1; i++) {
+            if (storage[i] != null) {
+                if (storage[i].uuid == uuid) {
+                    return storage[i];
                 }
             }
         }
@@ -33,23 +34,46 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int m;
-        for (m = c; m < storage.length; m++) {
-            if (storage[m] != null) {
-                if ((storage[m].uuid == uuid)) {
-                    storage[m] = null;
-                    f=0;
+        Resume[] resume_not_empty = this.getAll();
+        for (int i = startPointForDelete; i < resume_not_empty.length + 1; i++) {
+            if (storage[i] != null) {
+                if ((storage[i].uuid == uuid)) {
+                    storage[i] = null;
+                    startPointForSave = 0;
                     break;
                 }
             }
         }
     }
 
+
     Resume[] getAll() {
-        return storage;
+        int initial_lenght = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                initial_lenght++;
+            }
+        }
+
+        Resume[] resume_storage = new Resume[initial_lenght];
+        int uniqe_imndex = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                resume_storage[uniqe_imndex] = storage[i];
+                uniqe_imndex++;
+            }
+        }
+        return resume_storage;
     }
 
+
     int size() {
-        return storage.length;
+        int resume_count = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                resume_count++;
+            }
+        }
+        return resume_count;
     }
 }
