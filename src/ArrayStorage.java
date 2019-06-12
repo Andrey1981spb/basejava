@@ -1,27 +1,22 @@
-
 public class ArrayStorage {
     Resume[] storage = new Resume[5];
-    int size = 0;
+    int size;
 
     void clear() {
-        size = this.size();
-        for (int i = 0; i < size+1; i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
+            size = 0;
         }
     }
 
     void save(Resume r) {
-        size = this.size();
-        for (int i = 0; i < size+1; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            }
+        if (size < storage.length) {
+            storage[size] = r;
+            size++;
         }
     }
 
     Resume get(String uuid) {
-        size = this.size();
         for (int i = 0; i < size; i++) {
             if (storage[i] != null) {
                 if (storage[i].uuid == uuid) {
@@ -33,38 +28,25 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        size = this.size();
-        for (int i = 0; i <= size + 1; i++) {
-            if (storage[i] != null) {
-                if ((storage[i].uuid == uuid)) {
-                    storage[i] = storage[size];
-                    storage[size] = null;
-                    break;
-                }
+        for (int i = 0; i <= size; i++) {
+            if ((storage[i].uuid == uuid)) {
+                storage[i] = storage[size-1];
+                storage[size-1] = null;
+                size--;
+                break;
             }
         }
     }
 
     Resume[] getAll() {
-        size = this.size();
         Resume[] resumeStorage = new Resume[size];
-        int uniqeIndex = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                resumeStorage[uniqeIndex] = storage[i];
-                uniqeIndex++;
-            }
+        for (int i = 0; i < size; i++) {
+                resumeStorage[i] = storage[i];
         }
         return resumeStorage;
     }
 
     int size() {
-        size = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
