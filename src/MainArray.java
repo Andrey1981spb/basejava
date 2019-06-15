@@ -32,7 +32,7 @@ public class MainArray {
                     r = new Resume();
                     r.uuid = uuid;
                     ARRAY_STORAGE.save(r);
-                    printAll();
+
                     break;
                 case "get":
                     System.out.println(ARRAY_STORAGE.get(uuid));
