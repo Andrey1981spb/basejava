@@ -32,13 +32,19 @@ public class MainArray {
                     r = new Resume();
                     r.uuid = uuid;
                     ARRAY_STORAGE.save(r);
-
+                    printAll();
                     break;
                 case "get":
                     System.out.println(ARRAY_STORAGE.get(uuid));
                     break;
                 case "delete":
                     ARRAY_STORAGE.delete(uuid);
+                    printAll();
+                    break;
+                case "update":
+                    r = new Resume();
+                    r.uuid = uuid;
+                    ARRAY_STORAGE.update(r);
                     printAll();
                     break;
                 case "clear":
