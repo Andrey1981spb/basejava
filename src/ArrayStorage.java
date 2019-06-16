@@ -1,74 +1,76 @@
 import java.util.Arrays;
 
 public class ArrayStorage {
-    Resume[] storage = new Resume[5];
-    int size;
+    private final Resume[] storage = new Resume[10000];
+    private int size;
 
-    void clear() {
-        Arrays.fill(storage, null);
+    public void clear() {
+        Arrays.fill(storage, 0, size-1, null);
         size = 0;
     }
 
-    void save(Resume r) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid == r.uuid) {
-                System.out.println("Resume is exist");
-                return;
-            }
+    public void save(Resume resume) {
+        int i = compareValue(resume);
+        if (i == -1) {
+            storage[size] = resume;
+            size++;
+        } else {
+            System.out.println("Resume is exist");
         }
-        storage[size] = r;
-        size++;
 
         String overFlow = (storage.length == size) ? "storage overflow" : storage.length - size + " cells are available";
         System.out.println(overFlow);
     }
 
-    Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid == uuid) {
-                return storage[i];
-            }
-            checkElement(i,null);
+    public Resume get(String uuid) {
+        Resume resume = new Resume();
+        resume.setUuid(uuid);
+        int i = compareValue(resume);
+        if (i != -1) {
+            return storage[i];
+        } else {
+            System.out.println("Resume does not exist");
         }
         return null;
     }
 
-    void checkElement (int element, Resume r) {
-        if (storage[element]!=r){
-            if (element==size-1){
-                System.out.println("Resume does not exist");
-            }
+    public void delete(String uuid) {
+        Resume resume = new Resume();
+        resume.setUuid(uuid);
+        int i = compareValue(resume);
+        if (i != -1) {
+            storage[i] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        } else {
+            System.out.println("Resume does not exist");
         }
-
     }
 
-    void delete(String uuid) {
+    public void update(Resume resume) {
+        int i = compareValue(resume);
+        if (i != -1) {
+            storage[i] = resume;
+        } else {
+            System.out.println("Resume does not exist");
+        }
+    }
+
+    public int compareValue(Resume resume) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid == uuid) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                break;
+            if (storage[i].equals(resume)) {
+                return i;
             }
-            checkElement(i,null);
         }
+        return -1;
     }
 
-    void update (Resume r) {
-        for (int i = 0; i < size; i++){
-            if (storage[i].uuid==r.uuid){
-                storage[i] = r;
-                break;
-            }
-            checkElement(i, r);
-        }
+
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
     }
 
-    Resume[] getAll() {
-        return Arrays.copyOf(storage,size);
-    }
-
-    int size() {
+    public int size() {
         return size;
     }
 }
