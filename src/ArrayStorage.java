@@ -1,11 +1,11 @@
 import java.util.Arrays;
 
 public class ArrayStorage {
-    private final Resume[] storage = new Resume[10000];
+    private final Resume[] storage = new Resume[3];
     private int size;
 
     public void clear() {
-        Arrays.fill(storage, 0, size-1, null);
+        Arrays.fill(storage, 0, size - 1, null);
         size = 0;
     }
 
@@ -17,9 +17,9 @@ public class ArrayStorage {
         } else {
             System.out.println("Resume is exist");
         }
-
-        String overFlow = (storage.length == size) ? "storage overflow" : storage.length - size + " cells are available";
-        System.out.println(overFlow);
+        if (size == storage.length) {
+            System.out.println("storage overflow");
+        }
     }
 
     public Resume get(String uuid) {
