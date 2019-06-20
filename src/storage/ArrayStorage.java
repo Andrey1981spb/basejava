@@ -2,10 +2,9 @@ package storage;
 
 import model.Resume;
 
-import java.util.Arrays;
-
 public class ArrayStorage extends AbstractArrayStorage {
 
+    @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
@@ -17,6 +16,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
+    @Override
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index == -1) {
