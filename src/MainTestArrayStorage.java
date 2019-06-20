@@ -1,3 +1,7 @@
+import model.Resume;
+import storage.ArrayStorage;
+
+import java.util.Arrays;
 
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
@@ -26,6 +30,7 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
     }
 
     static void printAll() {
@@ -34,4 +39,5 @@ public class MainTestArrayStorage {
             System.out.println(r);
         }
     }
+
 }
