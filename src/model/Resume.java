@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume> {
 
     private String uuid;
 
