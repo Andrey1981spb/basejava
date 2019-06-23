@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Resume {
+public class Resume implements Comparable<Resume>{
 
     private String uuid;
 
@@ -30,5 +30,10 @@ public class Resume {
     @Override
     public int hashCode() {
         return Objects.hash(uuid);
+    }
+
+    @Override
+    public int compareTo(Resume resume) {
+        return uuid.compareTo(resume.uuid);
     }
 }
