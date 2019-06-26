@@ -71,6 +71,6 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Assert.assertArrayEquals(storage.getAll(), storage.getAll());
+        Assert.assertNotNull(storage);
     }
 }
