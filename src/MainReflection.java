@@ -17,8 +17,7 @@ public class MainReflection {
         System.out.println(resume);
 
         Method method = resume.getClass().getDeclaredMethod("toString");
-        method.invoke(resume);
-        System.out.println(method);
+        System.out.println("method invoke is " + method.invoke(resume));
     }
 
 }
