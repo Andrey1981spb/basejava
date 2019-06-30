@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest {
-    public Storage storage;
+    private Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -21,7 +21,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3);
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
-    public AbstractArrayStorageTest(Storage storage) {
+    protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -58,9 +58,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void storageOverFlow() {
         storage.clear();
-
         final int storage_limit = AbstractArrayStorage.STORAGE_LIMIT;
-
         try {
             for (int i = 0; i < storage_limit; i++) {
                 storage.save(new Resume());
@@ -68,8 +66,7 @@ public abstract class AbstractArrayStorageTest {
         } catch (StorageException e) {
             Assert.fail("not overflow yet");
         }
-
-        storage.save(RESUME_4);
+        storage.save(new Resume());
     }
 
     @Test(expected = NotExistStorageException.class)
