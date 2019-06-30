@@ -83,7 +83,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void update() {
         Resume resume = RESUME_4;
-        storage.save(resume);
+        storage.update(resume);
         Resume resumeCheck = storage.get(UUID_4);
         Assert.assertSame(resumeCheck, resume);
     }
