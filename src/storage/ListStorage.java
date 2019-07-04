@@ -3,31 +3,20 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ListStorage extends AbstractStorage {
 
-    List<Resume> resumeList = new CopyOnWriteArrayList<>();
+    private final List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    public Resume doGet(int index, String uuid) {
-        for (Resume resume : resumeList) {
-            if (uuid.equals(resume.getUuid())) {
-                return resume;
-            }
-        }
-        return null;
+    public Resume doGet(int index) {
+        return resumeList.get(index);
     }
 
     @Override
     public void clear() {
-        Iterator<Resume> resumeIterator = resumeList.iterator();
-        while (resumeIterator.hasNext()) {
-            Resume resume = resumeIterator.next();
-            resumeList.remove(resume);
-        }
+        resumeList.removeAll(resumeList);
     }
 
     @Override
@@ -36,18 +25,14 @@ public class ListStorage extends AbstractStorage {
     }
 
     public Resume[] getAll() {
-        List<Resume> resumeList2 = new ArrayList<>();
-        for (Resume resume : resumeList) {
-            resumeList2.add(resume);
-        }
-        Resume[] resumes = resumeList2.toArray(new Resume[size()]);
+        Resume[] resumes = resumeList.toArray(new Resume[size()]);
         return resumes;
     }
 
     protected int getIndex(String uuid) {
         for (Resume resume : resumeList) {
             if (uuid.equals(resume.getUuid())) {
-                return +1;
+                return resumeList.indexOf(resume);
             }
         }
         return -1;
@@ -59,23 +44,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doDelete(int index, String uuid) {
-        Iterator<Resume> resumeIterator = resumeList.iterator();
-        while (resumeIterator.hasNext()) {
-            Resume resume = resumeIterator.next();
-            if (uuid.equals(resume.getUuid())) {
-                resumeList.remove(resume);
-            }
-        }
+    protected void doDelete(int index) {
+        resumeList.remove(index);
     }
 
     @Override
-    protected void doUpdate(Resume resume) {
-        for (Resume resume1 : resumeList) {
-            if (resume1.equals(resume)) {
-                resumeList.set(resumeList.indexOf(resume1), resume);
-            }
-        }
+    protected void doUpdate(Resume resume, int index) {
+        resumeList.set(index, resume);
     }
 
 }

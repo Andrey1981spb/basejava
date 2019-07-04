@@ -1,6 +1,5 @@
 package storage;
 
-import exception.NotExistStorageException;
 import exception.StorageException;
 import model.Resume;
 
@@ -26,22 +25,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void doDelete(int index, String uuid) {
-        doArrayDelete(index, uuid);
+    public void doDelete(int index) {
+        doArrayDelete(index);
         storage[size - 1] = null;
         size--;
     }
 
-    public void doUpdate(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
+    public void doUpdate(Resume resume, int index) {
+        storage[index] = resume;
     }
 
-    public Resume doGet(int index, String uuid) {
+    public Resume doGet(int index) {
         return storage[index];
     }
 
@@ -58,5 +52,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void doArraySave(Resume resume, int index);
 
-    protected abstract void doArrayDelete(int index, String uuid);
+    protected abstract void doArrayDelete(int index);
 }

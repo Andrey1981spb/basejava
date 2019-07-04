@@ -20,7 +20,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doArrayDelete(int index, String uuid) {
+    protected void doArrayDelete(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 
