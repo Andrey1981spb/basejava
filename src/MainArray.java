@@ -1,5 +1,5 @@
 import model.Resume;
-import storage.ListStorage;
+import storage.MapStorage;
 import storage.Storage;
 
 import java.io.BufferedReader;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainArray {
-    private final static Storage ARRAY_STORAGE = new ListStorage();
+    private final static Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
