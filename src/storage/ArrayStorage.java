@@ -5,23 +5,23 @@ import model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int getIndex(String uuid) {
+    protected void doArrayDelete(Object searchKey) {
+        storage[(Integer) searchKey] = storage[size - 1];
+    }
+
+    @Override
+    protected void doArraySave(Resume resume, Object searchKey) {
+        storage[size] = resume;
+    }
+
+    @Override
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
-                return i;
+                return Integer.valueOf(i);
             }
         }
-        return -1;
-    }
-
-    @Override
-    protected void doArrayDelete(int index) {
-        storage[index] = storage[size - 1];
-    }
-
-    @Override
-    protected void doArraySave(Resume resume, int index) {
-        storage[size] = resume;
+        return Integer.valueOf(-1);
     }
 
 }

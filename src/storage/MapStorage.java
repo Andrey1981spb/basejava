@@ -3,7 +3,6 @@ package storage;
 import model.Resume;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
@@ -11,13 +10,8 @@ public class MapStorage extends AbstractStorage {
     private static final Map<String, Resume> resumeMap = new HashMap<>();
 
     @Override
-    public Resume doGet(int index) {
-        for (Map.Entry<String, Resume> resumeEntry : resumeMap.entrySet()) {
-            if (resumeEntry.getValue().hashCode() == index) {
-                return resumeMap.get(resumeEntry.getKey());
-            }
-        }
-        return null;
+    public Resume doGet(Object searchKey) {
+        return resumeMap.get(searchKey);
     }
 
     @Override
@@ -40,34 +34,37 @@ public class MapStorage extends AbstractStorage {
         return resumes;
     }
 
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         for (Map.Entry<String, Resume> resumeEntry : resumeMap.entrySet()) {
             if (resumeEntry.getKey() == uuid) {
-                return resumeEntry.getValue().hashCode();
+                String key = resumeEntry.getKey();
+                //   return Integer.valueOf(key);
+                return key;
             }
         }
-        return -1;
+        return null;
+    }
+
+    protected boolean isValid(Object searchKey) {
+        if (resumeMap.containsKey(searchKey)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    protected void doSave(Resume resume, int index) {
+    protected void doSave(Resume resume, Object searchKey) {
         resumeMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void doDelete(int index) {
-        Iterator<Map.Entry<String, Resume>> resumeIterator = resumeMap.entrySet().iterator();
-        while (resumeIterator.hasNext()) {
-            Map.Entry<String, Resume> resumeEntry = resumeIterator.next();
-            if (resumeEntry.getValue().hashCode() == index) {
-                resumeIterator.remove();
-            }
-        }
+    protected void doDelete(Object searchKey) {
+        resumeMap.remove(searchKey.toString());
     }
 
     @Override
-    protected void doUpdate(Resume resume, int index) {
-        resumeMap.put(resume.getUuid(), resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        resumeMap.put(searchKey.toString(), resume);
     }
 
 }

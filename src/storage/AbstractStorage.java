@@ -7,52 +7,54 @@ import model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (isValid(searchKey)) {
             throw new ExistStorageException(resume.getUuid());
         } else {
-            doSave(resume, index);
+            doSave(resume, searchKey);
         }
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isValid(searchKey)) {
             throw new NotExistStorageException(uuid);
         } else {
-            doDelete(index);
+            doDelete(searchKey);
         }
     }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (!isValid(searchKey)) {
             throw new NotExistStorageException(resume.getUuid());
         } else {
-            doUpdate(resume, index);
+            doUpdate(resume, searchKey);
         }
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isValid(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return doGet(index);
+        return doGet(searchKey);
     }
 
     public abstract Resume[] getAll();
 
     public abstract void clear();
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void doSave(Resume resume, int index);
+    protected abstract boolean isValid(Object searchKey);
 
-    protected abstract void doDelete(int index);
+    protected abstract void doSave(Resume resume, Object searchKey);
 
-    protected abstract void doUpdate(Resume resume, int index);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract Resume doGet(int index);
+    protected abstract void doUpdate(Resume resume, Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
 
 }

@@ -10,8 +10,8 @@ public class ListStorage extends AbstractStorage {
     private final List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    public Resume doGet(int index) {
-        return resumeList.get(index);
+    public Resume doGet(Object searchKey) {
+        return resumeList.get((Integer) searchKey);
     }
 
     @Override
@@ -28,29 +28,39 @@ public class ListStorage extends AbstractStorage {
         return resumeList.toArray(new Resume[size()]);
     }
 
-    protected int getIndex(String uuid) {
+    @Override
+    protected Integer getSearchKey(String uuid) {
         Resume[] resumes = resumeList.toArray(new Resume[size()]);
         for (int i = 0; i < resumes.length; i++) {
             if (uuid.equals(resumes[i].getUuid())) {
-                return i;
+                return Integer.valueOf(i);
             }
         }
-        return -1;
+        return Integer.valueOf(-1);
     }
 
     @Override
-    protected void doSave(Resume resume, int index) {
+    protected boolean isValid(Object searchKey) {
+        if ((Integer) searchKey < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void doSave(Resume resume, Object searchKey) {
         resumeList.add(resume);
     }
 
     @Override
-    protected void doDelete(int index) {
-        resumeList.remove(index);
+    protected void doDelete(Object searchKey) {
+        int t = (Integer) searchKey;
+        resumeList.remove(t);
     }
 
     @Override
-    protected void doUpdate(Resume resume, int index) {
-        resumeList.set(index, resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        resumeList.set((Integer) searchKey, resume);
     }
 
 }
