@@ -52,19 +52,6 @@ public abstract class AbstractStorageTest {
         assertEquals(4, storage.size());
     }
 
-    @Test(expected = StorageException.class)
-    public void storageOverFlow() {
-        storage.clear();
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("not overflow yet");
-        }
-        storage.save(new Resume());
-    }
-
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
         storage.delete(UUID_4);
