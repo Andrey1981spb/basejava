@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private static final Map<String, Resume> resumeMap = new HashMap<>();
+    private final Map<String, Resume> resumeMap = new HashMap<>();
 
     @Override
     public Resume doGet(Object searchKey) {
@@ -25,31 +25,16 @@ public class MapStorage extends AbstractStorage {
     }
 
     public Resume[] getAll() {
-        int count = 0;
-        Resume[] resumes = new Resume[size()];
-        for (Map.Entry<String, Resume> resumeEntry : resumeMap.entrySet()) {
-            resumes[count] = resumeEntry.getValue();
-            count++;
-        }
-        return resumes;
+        return resumeMap.values().toArray(new Resume[size()]);
     }
 
-    protected Object getSearchKey(String uuid) {
-        for (Map.Entry<String, Resume> resumeEntry : resumeMap.entrySet()) {
-            if (resumeEntry.getKey() == uuid) {
-                String key = resumeEntry.getKey();
-                //   return Integer.valueOf(key);
-                return key;
-            }
-        }
-        return null;
+    protected String getSearchKey(String uuid) {
+        return uuid;
     }
 
     protected boolean isValid(Object searchKey) {
-        if (resumeMap.containsKey(searchKey)) {
-            return true;
-        }
-        return false;
+        return resumeMap.containsKey(searchKey);
+
     }
 
     @Override

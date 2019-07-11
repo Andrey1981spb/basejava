@@ -20,7 +20,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            doArraySave(resume, searchKey);
+            doArraySave(resume, (Integer) searchKey);
             size++;
         }
     }
@@ -49,13 +49,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected boolean isValid(Object searchKey) {
-        if ((Integer) searchKey < 0) {
-            return false;
-        }
-        return true;
+        return (Integer) searchKey >= 0;
+
     }
 
-    protected abstract void doArraySave(Resume resume, Object searchKey);
+    protected abstract void doArraySave(Resume resume, int searchKey);
 
-    protected abstract void doArrayDelete(Object searchKey);
+    protected abstract void doArrayDelete(int searchKey);
 }

@@ -2,6 +2,7 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
+import exception.StorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +50,19 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_4);
         assertEquals(RESUME_4, storage.get(UUID_4));
         assertEquals(4, storage.size());
+    }
+
+    @Test(expected = StorageException.class)
+    public void storageOverFlow() {
+        storage.clear();
+        try {
+            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail("not overflow yet");
+        }
+        storage.save(new Resume());
     }
 
     @Test(expected = NotExistStorageException.class)

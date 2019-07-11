@@ -30,21 +30,17 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        Resume[] resumes = resumeList.toArray(new Resume[size()]);
-        for (int i = 0; i < resumes.length; i++) {
-            if (uuid.equals(resumes[i].getUuid())) {
-                return Integer.valueOf(i);
+        for (int i = 0; i < resumeList.size(); i++) {
+            if (resumeList.get(i).getUuid().equals(uuid)) {
+                return i;
             }
         }
-        return Integer.valueOf(-1);
+        return null;
     }
 
     @Override
     protected boolean isValid(Object searchKey) {
-        if ((Integer) searchKey < 0) {
-            return false;
-        }
-        return true;
+        return searchKey!=null;
     }
 
     @Override

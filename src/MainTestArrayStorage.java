@@ -1,9 +1,9 @@
 import model.Resume;
-import storage.SortedArrayStorage;
+import storage.MapStorage;
 import storage.Storage;
 
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");
