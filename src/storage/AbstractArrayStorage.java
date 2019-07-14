@@ -4,12 +4,24 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+
+    private static final Comparator ARRAY_RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume a, Resume b) {
+            if (a.getFullName().equals(b.getFullName())) {
+                return a.getUuid().compareTo(b.getUuid());
+            }
+            return a.getFullName().compareTo(b.getFullName());
+        }
+    };
 
     public int size() {
         return size;
@@ -44,8 +56,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public List<Resume> getAllSorted() {
+        Resume[] resumes = Arrays.copyOfRange(storage, 0, size);
+        List<Resume> resumeList = Arrays.asList(resumes);
+        resumeList.sort(ARRAY_RESUME_COMPARATOR);
+        return resumeList;
     }
 
     protected boolean isValid(Object searchKey) {

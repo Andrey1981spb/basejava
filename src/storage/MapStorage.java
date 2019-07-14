@@ -2,12 +2,21 @@ package storage;
 
 import model.Resume;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> resumeMap = new HashMap<>();
+
+    private final Comparator MAP_RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume a, Resume b) {
+            if (a.getFullName().equals(b.getFullName())) {
+                return a.getUuid().compareTo(b.getUuid());
+            }
+            return a.getFullName().compareTo(b.getFullName());
+        }
+    };
 
     @Override
     public Resume doGet(Object searchKey) {
@@ -24,12 +33,14 @@ public class MapStorage extends AbstractStorage {
         return resumeMap.size();
     }
 
-    public Resume[] getAll() {
-        return resumeMap.values().toArray(new Resume[size()]);
+    public List<Resume> getAllSorted() {
+        List<Resume> resumeList = new ArrayList<>(resumeMap.values());
+        resumeList.sort(MAP_RESUME_COMPARATOR);
+        return resumeList;
     }
 
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected String getSearchKey(Object uuid) {
+        return (String) uuid;
     }
 
     protected boolean isValid(Object searchKey) {

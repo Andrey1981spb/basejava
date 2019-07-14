@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+    private String fullName;
+
     @Override
     protected void doArraySave(Resume resume, int searchKey) {
         int positionInvert = ~searchKey;
@@ -20,8 +22,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
+    protected Integer getSearchKey(Object uuid) {
+        Resume searchKey = new Resume((String) uuid, fullName);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 

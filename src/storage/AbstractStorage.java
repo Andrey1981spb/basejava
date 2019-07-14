@@ -4,9 +4,14 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
+import java.time.LocalTime;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
+    public LocalTime localTime;
 
     public void save(Resume resume) {
+        resume.setLocalTime(localTime.now());
         Object searchKey = getSearchKey(resume.getUuid());
         if (isValid(searchKey)) {
             throw new ExistStorageException(resume.getUuid());
@@ -41,11 +46,11 @@ public abstract class AbstractStorage implements Storage {
         return doGet(searchKey);
     }
 
-    public abstract Resume[] getAll();
+    public abstract List<Resume> getAllSorted();
 
     public abstract void clear();
 
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract Object getSearchKey(Object uuid);
 
     protected abstract boolean isValid(Object searchKey);
 
