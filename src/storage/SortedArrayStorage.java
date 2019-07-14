@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    private String fullName;
+    public String fullName;
 
     @Override
     protected void doArraySave(Resume resume, int searchKey) {
