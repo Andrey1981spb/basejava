@@ -8,6 +8,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     public String fullName;
 
+
     @Override
     protected void doArraySave(Resume resume, int searchKey) {
         int positionInvert = ~searchKey;
