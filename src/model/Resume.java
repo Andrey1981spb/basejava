@@ -6,17 +6,16 @@ import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
 
-    private final String uuid;
-    private final String fullName;
-    private LocalTime localTime;
+    private String uuid;
+    private String fullName;
+
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
+    }
 
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
-    }
-
-    public Resume() {
-        this(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     public String getUuid() {
@@ -25,14 +24,6 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
-    }
-
-    public LocalTime getLocalTime() {
-        return localTime;
-    }
-
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
     }
 
     @Override

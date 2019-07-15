@@ -3,22 +3,11 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> resumeList = new ArrayList<>();
-
-    private static final Comparator LIST_RESUME_COMPARATOR = new Comparator<Resume>() {
-        @Override
-        public int compare(Resume a, Resume b) {
-            if (a.getFullName().equals(b.getFullName())) {
-                return a.getUuid().compareTo(b.getUuid());
-            }
-            return a.getFullName().compareTo(b.getFullName());
-        }
-    };
 
     @Override
     public Resume doGet(Object searchKey) {
@@ -33,11 +22,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return resumeList.size();
-    }
-
-    public List<Resume> getAllSorted() {
-        resumeList.sort(LIST_RESUME_COMPARATOR);
-        return resumeList;
     }
 
     @Override
@@ -69,6 +53,11 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void doUpdate(Resume resume, Object searchKey) {
         resumeList.set((Integer) searchKey, resume);
+    }
+
+    @Override
+    protected List<Resume> getList() {
+        return resumeList;
     }
 
 }

@@ -7,11 +7,10 @@ import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
-   protected Storage storage;
+    protected String fullName = "name";
 
-    public AbstractArrayStorageTest(Storage storage) {
+    protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
-        this.storage=storage;
     }
 
     @Test(expected = StorageException.class)
@@ -19,12 +18,12 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         storage.clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume(fullName));
             }
         } catch (StorageException e) {
             Assert.fail("not overflow yet");
         }
-        storage.save(new Resume());
+        storage.save(new Resume(fullName));
     }
 
 }

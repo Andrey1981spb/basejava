@@ -4,14 +4,19 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
-import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
-    public LocalTime localTime;
+
+    private static final Comparator RESUME_COMPARATOR = (Comparator<Resume>) (a, b) -> {
+        if (a.getFullName().equals(b.getFullName())) {
+            return a.getUuid().compareTo(b.getUuid());
+        }
+        return a.getFullName().compareTo(b.getFullName());
+    };
 
     public void save(Resume resume) {
-        resume.setLocalTime(localTime.now());
         Object searchKey = getSearchKey(resume.getUuid());
         if (isValid(searchKey)) {
             throw new ExistStorageException(resume.getUuid());
@@ -21,34 +26,35 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        Object searchKey = getSearchKey(uuid);
-        if (!isValid(searchKey)) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            doDelete(searchKey);
-        }
+        Object searchKey = resumeIsNotExist(uuid);
+        doDelete(searchKey);
     }
 
     public void update(Resume resume) {
-        Object searchKey = getSearchKey(resume.getUuid());
-        if (!isValid(searchKey)) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            doUpdate(resume, searchKey);
-        }
+        Object searchKey = resumeIsNotExist(resume.getUuid());
+        doUpdate(resume, searchKey);
     }
 
     public Resume get(String uuid) {
+        Object searchKey = resumeIsNotExist(uuid);
+        return doGet(searchKey);
+    }
+
+    private Object resumeIsNotExist(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isValid(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return doGet(searchKey);
+        return searchKey;
     }
 
-    public abstract List<Resume> getAllSorted();
+    public List<Resume> getAllSorted() {
+        List<Resume> resumeList = getList();
+        resumeList.sort(RESUME_COMPARATOR);
+        return resumeList;
+    }
 
-    public abstract void clear();
+    protected abstract List<Resume> getList();
 
     protected abstract Object getSearchKey(Object uuid);
 

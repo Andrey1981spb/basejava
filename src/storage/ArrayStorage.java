@@ -5,12 +5,12 @@ import model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void doArrayDelete(int searchKey) {
-        storage[searchKey] = storage[size - 1];
+    protected void deleteFromArray(int index) {
+        storage[index] = storage[size - 1];
     }
 
     @Override
-    protected void doArraySave(Resume resume, int searchKey) {
+    protected void saveToArray(Resume resume, int index) {
         storage[size] = resume;
     }
 
