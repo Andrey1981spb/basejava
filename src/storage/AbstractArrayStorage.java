@@ -12,6 +12,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public int size() {
         return size;
     }
@@ -26,29 +27,32 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
+    @Override
     public void doDelete(Object index) {
         deleteFromArray((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
+    @Override
     public void doUpdate(Resume resume, Object index) {
         storage[(Integer) index] = resume;
     }
 
+    @Override
     public Resume doGet(Object index) {
         return storage[(Integer) index];
     }
 
-
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     protected boolean isValid(Object index) {
         return (Integer) index >= 0;
-
     }
 
     protected abstract void saveToArray(Resume resume, int index);

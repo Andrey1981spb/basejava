@@ -40,7 +40,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object searchKey) {
-        resumeFullNameMap.remove(((Resume)searchKey).getUuid());
+        resumeFullNameMap.remove(((Resume) searchKey).getUuid());
     }
 
     @Override

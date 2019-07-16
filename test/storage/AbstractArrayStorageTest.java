@@ -7,14 +7,13 @@ import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
-    protected String fullName = "name";
-
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
     }
 
-    @Test(expected = StorageException.class)
+    @Test ( expected = StorageException.class )
     public void storageOverFlow() {
+        String fullName = "name";
         storage.clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
