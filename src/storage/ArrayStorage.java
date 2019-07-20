@@ -10,11 +10,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void doUpdate(Resume resume, Object index) {
-        super.doUpdate(resume, index);
-    }
-
-    @Override
     protected void saveToArray(Resume resume, int index) {
         storage[size] = resume;
     }

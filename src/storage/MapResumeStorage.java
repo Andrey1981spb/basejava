@@ -4,18 +4,18 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
 
     private final Map<String, Resume> resumeFullNameMap = new HashMap<>();
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Resume searchKey) {
         resumeFullNameMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        return (Resume) searchKey;
+    public Resume doGet(Resume searchKey) {
+        return searchKey;
     }
 
     @Override
@@ -34,17 +34,17 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isValid(Object searchKey) {
+    protected boolean isValid(Resume searchKey) {
         return resumeFullNameMap.containsValue(searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        resumeFullNameMap.remove(((Resume) searchKey).getUuid());
+    protected void doDelete(Resume searchKey) {
+        resumeFullNameMap.remove((searchKey).getUuid());
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
+    protected void doUpdate(Resume resume, Resume searchKey) {
         resumeFullNameMap.put(resume.getUuid(), resume);
     }
 
