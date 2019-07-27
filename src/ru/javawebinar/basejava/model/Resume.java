@@ -1,69 +1,58 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Resume {
 
     private String uuid;
     private String fullName;
-    private ContactInfo contactInfo;
-    private Personal personal;
-    private Objective objective;
-    private Achievment achievment;
-    private Education education;
-    private Experience experience;
-    private Qualifications qualifications;
+    private final List<ResumeSections> resumeSections = new ArrayList<>();
+    private final Map<ContactType, String> contactInfoMap = new HashMap<>();
+    private PersonalObjective personalObjective;
+    private AchievementQualifications achievmentQualifications;
+    private ExperienceEducation experienceEducation;
 
     public Resume() {
         fullName = "Grigory Kislin";
-        contactInfo = new ContactInfo();
-        personal = new Personal();
-        objective = new Objective();
-        achievment = new Achievment();
-        education = new Education();
-        experience = new Experience();
-        qualifications = new Qualifications();
+        personalObjective = new PersonalObjective();
+        achievmentQualifications = new AchievementQualifications();
+        experienceEducation = new ExperienceEducation();
+    }
+
+    public List<ResumeSections> getResumeSections() {
+        return resumeSections;
+    }
+
+    public Map<ContactType, String> getContactInfoMap() {
+        return contactInfoMap;
+    }
+
+    public PersonalObjective getPersonalObjective() {
+        return personalObjective;
+    }
+
+    public AchievementQualifications getAchievmentQualifications() {
+        return achievmentQualifications;
+    }
+
+    public ExperienceEducation getExperienceEducation() {
+        return experienceEducation;
     }
 
     public void setResumeSections(SectionType sectionType, String inputData) {
         if (sectionType == SectionType.PERSONAL) {
-            personal.setPersonal(inputData);
+            personalObjective.setPersonal(sectionType, inputData);
         } else if (sectionType == SectionType.OBJECTIVE) {
-            objective.setObjective(inputData);
+            personalObjective.setObjective(sectionType, inputData);
         } else if (sectionType == SectionType.ACHIEVEMENT) {
-            achievment.setAchievement(inputData);
+            achievmentQualifications.setAchievementList(sectionType, inputData);
         } else if (sectionType == SectionType.QUALIFICATIONS) {
-            qualifications.setQualifications(inputData);
+            achievmentQualifications.setQualificationsList(sectionType, inputData);
         } else if (sectionType == SectionType.EXPERIENCE) {
-            experience.setExperience(inputData);
+            experienceEducation.setExperienceList(sectionType, inputData);
         } else if (sectionType == SectionType.EDUCATION) {
-            education.setEducation(inputData);
+            experienceEducation.setEducationList(sectionType, inputData);
         }
-    }
-
-    public Personal getPersonal() {
-        return personal;
-    }
-
-    public Objective getObjective() {
-        return objective;
-    }
-
-    public Achievment getAchievment() {
-        return achievment;
-    }
-
-    public Education getEducation() {
-        return education;
-    }
-
-    public Experience getExperience() {
-        return experience;
-    }
-
-    public Qualifications getQualifications() {
-        return qualifications;
     }
 
     public Resume(String fullName) {
@@ -73,21 +62,6 @@ public class Resume {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
-    }
-
-    public void setContactInfo(String telephone, String skype, String mail, String profileLinkedIn,
-                               String profileGitHub, String profileStackoverflow, String homepage) {
-        contactInfo.setTelephone(telephone);
-        contactInfo.setSkype(skype);
-        contactInfo.setMail(mail);
-        contactInfo.setProfileLinkedIn(profileLinkedIn);
-        contactInfo.setProfileGitHub(profileGitHub);
-        contactInfo.setProfileStackoverflow(profileStackoverflow);
-        contactInfo.setHomepage(homepage);
-    }
-
-    public ContactInfo getContactInfo() {
-        return contactInfo;
     }
 
     public String getUuid() {

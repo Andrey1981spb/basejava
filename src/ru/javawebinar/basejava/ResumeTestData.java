@@ -4,12 +4,11 @@ import ru.javawebinar.basejava.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ResumeTestData {
     private static List<Resume> resumeList = new ArrayList<>();
     private static Resume resume = new Resume();
-    private static List<ResumeListSections> resumeListSections = new ArrayList<>();
-    private static List<ResumeStringSections> resumeStringSections = new ArrayList<>();
 
     public static void main(String[] args) {
         fillResume();
@@ -20,22 +19,22 @@ public class ResumeTestData {
 
         resumeList.add(resume);
 
-        resume.setContactInfo("+7(921) 855-0482", "grigory.kislin", "gkislin@yandex.ru",
-                "profile LinkedIn", "https://github.com/gkislin",
-                "https://stackoverflow.com/users/548473/gkislin", "http://gkislin.ru/"
-        );
+        Map<ContactType, String> contactInfoMap = resume.getContactInfoMap();
 
-        resume.setResumeSections(SectionType.PERSONAL,"Аналитический склад ума, сильная логика, креативность, инициативность.Пурист кода и архитектуры.");
+        contactInfoMap.put(ContactType.TELEPHONE, "+7(921) 855-0482");
+        contactInfoMap.put(ContactType.SKYPE, "grigory.kislin");
+        contactInfoMap.put(ContactType.MAIL, "gkislin@yandex.ru");
+        contactInfoMap.put(ContactType.PROFILE_LINKED_IN, "profile LinkedIn");
+        contactInfoMap.put(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
+        contactInfoMap.put(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
+        contactInfoMap.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
-        Personal personal = resume.getPersonal();
-
-        resumeStringSections.add(personal);
+        resume.setResumeSections(SectionType.PERSONAL, "Аналитический склад ума, сильная логика, креативность, инициативность.Пурист кода и архитектуры.");
 
         resume.setResumeSections(SectionType.OBJECTIVE, "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям.\n");
 
-        Objective objective = resume.getObjective();
-
-        resumeStringSections.add(objective);
+        PersonalObjective personalObjective = resume.getPersonalObjective();
+        resume.getResumeSections().add(personalObjective);
 
         resume.setResumeSections(SectionType.ACHIEVEMENT, "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                 "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
@@ -53,9 +52,6 @@ public class ResumeTestData {
         resume.setResumeSections(SectionType.ACHIEVEMENT, "Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, " +
                 "Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.\n");
 
-        Achievment achievment = resume.getAchievment();
-
-        resumeListSections.add(achievment);
 
         resume.setResumeSections(SectionType.QUALIFICATIONS, "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
         resume.setResumeSections(SectionType.QUALIFICATIONS, "Version control: Subversion, Git, Mercury, ClearCase, Perforce");
@@ -74,9 +70,9 @@ public class ResumeTestData {
         resume.setResumeSections(SectionType.QUALIFICATIONS, "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования");
         resume.setResumeSections(SectionType.QUALIFICATIONS, "Родной русский, английский upper intermediate\n");
 
-        Qualifications qualifications = resume.getQualifications();
+        AchievementQualifications achievmentQualifications = resume.getAchievmentQualifications();
 
-        resumeListSections.add(qualifications);
+        resume.getResumeSections().add(achievmentQualifications);
 
         resume.setResumeSections(SectionType.EXPERIENCE, "Java Online Projects\n" +
                 "10/2013 - Сейчас\tАвтор проекта.\n" +
@@ -110,9 +106,6 @@ public class ResumeTestData {
                 "09/1997 - 01/2005\tИнженер по аппаратному и программному тестированию\n" +
                 "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).\n");
 
-        Experience experience = resume.getExperience();
-
-        resumeListSections.add(experience);
 
         resume.setResumeSections(SectionType.EDUCATION, "Coursera\n" +
                 "03/2013 - 05/2013\t\"Functional Programming Principles in Scala\" by Martin Odersky");
@@ -128,9 +121,8 @@ public class ResumeTestData {
         resume.setResumeSections(SectionType.EDUCATION, "Заочная физико-техническая школа при МФТИ\n" +
                 "09/1984 - 06/1987\tЗакончил с отличием");
 
-        Education education = resume.getEducation();
-
-        resumeListSections.add(education);
+        ExperienceEducation experienceEducation = resume.getExperienceEducation();
+        resume.getResumeSections().add(experienceEducation);
     }
 
     private static void checkResume() {
@@ -139,50 +131,17 @@ public class ResumeTestData {
         for (Resume resume : resumeList) {
             System.out.println(resume.getFullName());
 
-            for (ContactType contactType : ContactType.values()) {
-                String contact = getContact(resume, contactType);
-                System.out.println(contact);
+            for (Map.Entry<ContactType, String> entry : resume.getContactInfoMap().entrySet()) {
+                System.out.println(entry.getValue());
             }
 
-            for (ResumeStringSections resumeSection : resumeStringSections) {
-                String sectionData = resumeSection.getData();
-                System.out.println(sectionData);
-            }
-
-            for (ResumeListSections resumeSection : resumeListSections) {
-                List<String> sectionData = resumeSection.getData();
-                for (String section : sectionData) {
-                    System.out.println(section);
-                }
+            for (ResumeSections resumeSection : resume.getResumeSections()) {
+                List<String> sectionData = resumeSection.getDataFromSection();
+                for (String data : sectionData)
+                    System.out.println(data);
             }
 
         }
-    }
-
-    private static String getContact(Resume resume, ContactType contactType) {
-        switch (contactType) {
-            case TELEPHONE:
-                return resume.getContactInfo().getTelephone();
-
-            case SKYPE:
-                return resume.getContactInfo().getSkype();
-
-            case MAIL:
-                return resume.getContactInfo().getMail();
-
-            case PROFILE_LINKED_IN:
-                return resume.getContactInfo().getProfileLinkedIn();
-
-            case PROFILE_GITHUB:
-                return resume.getContactInfo().getProfileGitHub();
-
-            case PROFILE_STACKOVERFLOW:
-                return resume.getContactInfo().getProfileStackoverflow();
-
-            case HOMEPAGE:
-                return resume.getContactInfo().getHomepage();
-        }
-        return null;
     }
 
 }
