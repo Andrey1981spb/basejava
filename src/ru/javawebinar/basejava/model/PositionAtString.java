@@ -2,24 +2,14 @@ package ru.javawebinar.basejava.model;
 
 public class PositionAtString extends ResumeSections {
 
-    private String personal;
-    private String objective;
+    private String position;
 
     @Override
-    public String getPersonal() {
-        return personal;
+    public String getPosition() {
+        return position;
     }
 
-    public void setPersonal(String personal) {
-        this.personal = personal;
-    }
-
-    @Override
-    public String getObjective() {
-        return objective;
-    }
-
-    public void setObjective(String objective) {
-        this.objective = objective;
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

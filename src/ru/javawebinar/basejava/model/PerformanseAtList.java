@@ -5,24 +5,16 @@ import java.util.List;
 
 public class PerformanseAtList extends ResumeSections {
 
-    private final List<String> achievementList = new ArrayList<>();
+    private final List<String> performanseList = new ArrayList<>();
     private final List<String> qualificationsList = new ArrayList<>();
 
     @Override
-    public List<String> getAchievementList() {
-        return achievementList;
+    public List<String> getPerformanseList() {
+        return performanseList;
     }
 
-    public void setAchievementList(String achievement) {
-        achievementList.add(achievement);
+    public void setPerformanseList(String performanse) {
+        performanseList.add(performanse);
     }
 
-    @Override
-    public List<String> getQualificationsList() {
-        return qualificationsList;
-    }
-
-    public void setQualificationsList(String qualifications) {
-        qualificationsList.add(qualifications);
-    }
 }

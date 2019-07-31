@@ -6,24 +6,15 @@ import java.util.Map;
 
 public class WorkStudyAtMAP extends ResumeSections {
 
-    private final Map<LocalDate, String> experienceMap = new HashMap<>();
-    private final Map<LocalDate, String> educationMap = new HashMap<>();
+    private final Map<LocalDate, String> workStudyMAP = new HashMap<>();
 
     @Override
-    public Map<LocalDate, String> getExperienceMap() {
-        return experienceMap;
+    public Map<LocalDate, String> getWorkStudyMAP() {
+        return workStudyMAP;
     }
 
-    @Override
-    public Map<LocalDate, String> getEducationMap() {
-        return educationMap;
+    public void setWorkStudyMAP(LocalDate localDate, String workStudy) {
+        workStudyMAP.put(localDate, workStudy);
     }
 
-    public void setExperienceMap(LocalDate localDate, String experience) {
-        experienceMap.put(localDate, experience);
-    }
-
-    public void setEducationMap(LocalDate localDate, String education) {
-        educationMap.put(localDate, education);
-    }
 }

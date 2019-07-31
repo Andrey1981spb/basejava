@@ -7,30 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ResumeSections {
-    private final List<String> outputList = new ArrayList<>();
-    private final Map<LocalDate, String> outputMap = new HashMap<>();
+    private final List<String> performanseList = new ArrayList<>();
+    private final Map<LocalDate, String> workStudyMAP = new HashMap<>();
 
-    public String getPersonal() {
+    public String getPosition() {
         return null;
     }
 
-    public String getObjective() {
-        return null;
+    public List<String> getPerformanseList() {
+        return performanseList;
     }
 
-    public List<String> getAchievementList() {
-        return outputList;
-    }
-
-    public List<String> getQualificationsList() {
-        return outputList;
-    }
-
-    public Map<LocalDate, String> getExperienceMap() {
-        return outputMap;
-    }
-
-    public Map<LocalDate, String> getEducationMap() {
-        return outputMap;
+    public Map<LocalDate, String> getWorkStudyMAP() {
+        return workStudyMAP;
     }
 }
