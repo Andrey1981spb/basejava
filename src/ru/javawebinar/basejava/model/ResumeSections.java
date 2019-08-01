@@ -8,17 +8,19 @@ import java.util.Map;
 
 public abstract class ResumeSections {
     private final List<String> performanseList = new ArrayList<>();
-    private final Map<LocalDate, String> workStudyMAP = new HashMap<>();
+    private final List<WorkStudyStringDate> workStudyStringDates = new ArrayList<>();
 
     public String getPosition() {
         return null;
     }
 
-    public List<String> getPerformanseList() {
+    public List<String> getPerformanceList() {
         return performanseList;
     }
 
-    public Map<LocalDate, String> getWorkStudyMAP() {
-        return workStudyMAP;
+    public List<WorkStudyStringDate> getWorkStudyStringDates() {
+        return workStudyStringDates;
     }
+
+
 }

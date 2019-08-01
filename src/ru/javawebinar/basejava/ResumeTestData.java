@@ -9,15 +9,8 @@ import java.util.*;
 public class ResumeTestData {
     private static final Resume resume = new Resume();
 
-    private static final PositionAtString personal = new PositionAtString();
-    private static final PositionAtString objective = new PositionAtString();
-    private static final PerformanseAtList achievement = new PerformanseAtList();
-    private static final PerformanseAtList qualifications = new PerformanseAtList();
-    private static final WorkStudyAtMAP experience = new WorkStudyAtMAP();
-    private static final WorkStudyAtMAP education = new WorkStudyAtMAP();
-
     private static final Map<SectionType, ResumeSections> resumeSections = resume.getResumeSections();
-
+/*
     public static void main(String[] args) {
         fillResume();
         checkResume();
@@ -171,5 +164,5 @@ public class ResumeTestData {
 
         return null;
     }
-
+*/
 }
