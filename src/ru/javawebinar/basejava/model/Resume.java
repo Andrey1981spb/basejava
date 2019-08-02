@@ -2,21 +2,17 @@ package ru.javawebinar.basejava.model;
 
 import java.util.*;
 
-public class Resume {
+public class Resume implements Comparable<Resume> {
 
     private String uuid;
     private String fullName;
-    private final Map<SectionType, ResumeSections> resumeSections = new HashMap<>();
+    private final Map<SectionType, AbstractSection> resumeSections = new HashMap<>();
     private final Map<ContactType, String> contactInfoMap = new HashMap<>();
 
     public Resume() {
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Map<SectionType, ResumeSections> getResumeSections() {
+    public Map<SectionType, AbstractSection> getResumeSections() {
         return resumeSections;
     }
 
@@ -31,6 +27,10 @@ public class Resume {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public void setResumeSections(SectionType sectionType, AbstractSection resumeSection) {
+        resumeSections.put(sectionType, resumeSection);
     }
 
     public String getUuid() {
@@ -51,12 +51,19 @@ public class Resume {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid);
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(uuid);
+    }
+
+    @Override
+    public int compareTo(Resume resume) {
+        int cmp = fullName.compareTo(resume.fullName);
+        return cmp != 0 ? cmp : uuid.compareTo(resume.uuid);
     }
 
 }

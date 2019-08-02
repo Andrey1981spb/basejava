@@ -57,7 +57,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract List<Resume> getList();
 
-    protected abstract SK getSearchKey(Object uuid);
+    protected abstract SK getSearchKey(String uuid);
 
     protected abstract boolean isValid(SK searchKey);
 

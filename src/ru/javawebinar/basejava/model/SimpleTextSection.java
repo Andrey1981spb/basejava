@@ -2,19 +2,23 @@ package ru.javawebinar.basejava.model;
 
 import java.util.Objects;
 
-public class PositionAtString extends ResumeSections {
+public class SimpleTextSection extends AbstractSection {
 
     private String position;
 
-    public PositionAtString(String position) {
+    public SimpleTextSection(String position) {
         this.position = position;
+    }
+
+    public String getPosition() {
+        return position;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PositionAtString that = (PositionAtString) o;
+        SimpleTextSection that = (SimpleTextSection) o;
         return position.equals(that.position);
     }
 
@@ -25,13 +29,6 @@ public class PositionAtString extends ResumeSections {
 
     @Override
     public String toString() {
-        return "PositionAtString{" +
-                "position='" + position + '\'' +
-                '}';
-    }
-
-    @Override
-    public String getPosition() {
         return position;
     }
 

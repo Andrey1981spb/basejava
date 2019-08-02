@@ -3,14 +3,14 @@ package ru.javawebinar.basejava.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class WorkStudyStringDate {
+public class Organization extends AbstractSection {
 
     private String titleURL;
     private LocalDate dateOfEntry;
     private LocalDate dateOfExist;
     private String description;
 
-    public WorkStudyStringDate(String titleURL, LocalDate dateOfEntry, LocalDate dateOfExist, String description) {
+    public Organization(String titleURL, LocalDate dateOfEntry, LocalDate dateOfExist, String description) {
         this.titleURL = titleURL;
         this.dateOfEntry = dateOfEntry;
         this.dateOfExist = dateOfExist;
@@ -21,7 +21,7 @@ public class WorkStudyStringDate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WorkStudyStringDate that = (WorkStudyStringDate) o;
+        Organization that = (Organization) o;
         return titleURL.equals(that.titleURL) &&
                 dateOfEntry.equals(that.dateOfEntry) &&
                 dateOfExist.equals(that.dateOfExist) &&
@@ -35,11 +35,8 @@ public class WorkStudyStringDate {
 
     @Override
     public String toString() {
-        return "WorkStudyAtMAP{" +
-                "title='" + titleURL + '\'' +
-                ", dateOfEntry=" + dateOfEntry +
-                ", dateOfExist=" + dateOfExist +
-                ", description='" + description + '\'' +
-                '}';
+        return titleURL + '\''
+                + dateOfEntry + dateOfExist + '\''
+                + description + '\'';
     }
 }

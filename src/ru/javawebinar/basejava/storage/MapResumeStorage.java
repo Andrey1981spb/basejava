@@ -29,7 +29,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected Resume getSearchKey(Object uuid) {
+    protected Resume getSearchKey(String uuid) {
         return resumeFullNameMap.get(uuid);
     }
 

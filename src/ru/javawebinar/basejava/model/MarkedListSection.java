@@ -4,15 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PeformanceAtList extends ResumeSections {
+public class MarkedListSection extends AbstractSection {
 
     private final List<String> performanseList = new ArrayList<>();
+
+    public MarkedListSection(String data) {
+        performanseList.add(data);
+    }
+
+    public List<String> getPerformanceList() {
+        return performanseList;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PeformanceAtList that = (PeformanceAtList) o;
+        MarkedListSection that = (MarkedListSection) o;
         return performanseList.equals(that.performanseList);
     }
 
@@ -22,14 +30,7 @@ public class PeformanceAtList extends ResumeSections {
     }
 
     @Override
-    public List<String> getPerformanceList() {
-        return performanseList;
-    }
-
-    @Override
     public String toString() {
-        return "PerformanseAtList{" +
-                "performanseList=" + performanseList +
-                '}';
+        return  String.valueOf(performanseList);
     }
 }
