@@ -6,8 +6,8 @@ public class Resume implements Comparable<Resume> {
 
     private String uuid;
     private String fullName;
-    private final Map<SectionType, AbstractSection> resumeSections = new HashMap<>();
-    private final Map<ContactType, String> contactInfoMap = new HashMap<>();
+    private final Map<SectionType, AbstractSection> resumeSections = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> contactInfoMap = new EnumMap<>(ContactType.class);
 
     public Resume() {
     }

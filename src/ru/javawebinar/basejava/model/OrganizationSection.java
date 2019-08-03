@@ -31,8 +31,6 @@ public class OrganizationSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "WorkStudyAtList{" +
-                "workStudyStringDates=" + organizations +
-                '}';
+        return String.valueOf(organizations);
     }
 }

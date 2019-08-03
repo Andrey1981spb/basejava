@@ -1,20 +1,19 @@
 package ru.javawebinar.basejava.model;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Organization extends AbstractSection {
 
-    private String titleURL;
-    private LocalDate dateOfEntry;
-    private LocalDate dateOfExist;
-    private String description;
+    private Link homePage;
+    private Position position;
+    private List<Position> positionList = new ArrayList<>();
 
-    public Organization(String titleURL, LocalDate dateOfEntry, LocalDate dateOfExist, String description) {
-        this.titleURL = titleURL;
-        this.dateOfEntry = dateOfEntry;
-        this.dateOfExist = dateOfExist;
-        this.description = description;
+    public Organization(String name, String url, String title, LocalDate dateOfEntry, LocalDate dateOfExit, String description) {
+        this.homePage = new Link(name, url);
+        this.position = new Position(title, dateOfEntry, dateOfExit, description);
+        this.positionList.add(position);
     }
 
     @Override
@@ -22,21 +21,22 @@ public class Organization extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return titleURL.equals(that.titleURL) &&
-                dateOfEntry.equals(that.dateOfEntry) &&
-                dateOfExist.equals(that.dateOfExist) &&
-                description.equals(that.description);
+        return homePage.equals(that.homePage) &&
+                positionList.equals(that.positionList);
     }
 
-    @Override
     public int hashCode() {
-        return Objects.hash(titleURL, dateOfEntry, dateOfExist, description);
+        int result = homePage.hashCode();
+        result = 31 * result + position.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return titleURL + '\''
-                + dateOfEntry + dateOfExist + '\''
-                + description + '\'';
+        return "Organization{" +
+                "homePage=" + homePage +
+                ", position=" + position +
+                ", positionList=" + positionList +
+                '}';
     }
 }

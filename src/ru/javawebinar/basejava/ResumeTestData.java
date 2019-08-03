@@ -35,21 +35,39 @@ public class ResumeTestData {
         resume.setResumeSections(SectionType.ACHIEVEMENT, new MarkedListSection("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
                 "\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n"));
-        resume.setResumeSections(SectionType.EXPERIENCE, new MarkedListSection("Реализация двухфакторной аутентификации для онлайн платформы " +
+        resume.setResumeSections(SectionType.ACHIEVEMENT, new MarkedListSection("Реализация двухфакторной аутентификации для онлайн платформы " +
                 "управления проектами Wrike. Интеграция с Twilio, " +
                 "DuoSecurity, Google Authenticator, Jira, Zendesk."));
 
-
-        resume.setResumeSections(SectionType.EXPERIENCE, new OrganizationSection(new Organization("\"Java Online Projects",
-                LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проекта.\n" +
-                "10/2013 - Сейчас\tСоздание, организация и проведение Java онлайн проектов и стажировок.")));
+        resume.setResumeSections(SectionType.QUALIFICATIONS, new MarkedListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2"));
+        resume.setResumeSections(SectionType.QUALIFICATIONS, new MarkedListSection("Version control: Subversion, Git, Mercury, ClearCase, Perforce"));
 
 
-        resume.setResumeSections(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Wrike",
+
+        resume.setResumeSections(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Java Online Projects", "http://javaops.ru/",
+                "Java Online Projects", LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проекта.\n" +
+                        "10/2013 - Сейчас\tСоздание, организация и проведение Java онлайн проектов и стажировок.")));
+        resume.setResumeSections(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Wrike", "https://www.wrike.com/", "Wrike",
                 LocalDate.of(2014, Month.OCTOBER, 30),
                 LocalDate.of(2016, Month.JANUARY, 30), "Проектирование и разработка онлайн платформы управления проектами Wrike " +
                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, " +
                 "OAuth2, JWT SSO.")));
+
+        resume.setResumeSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("Санкт-Петербургский национальный исследовательский " +
+                        "университет информационных технологий, механики и оптики", "http://www.ifmo.ru/ru/",
+                        "Аспирантура (программист С, С++)",
+                        LocalDate.of(1993, Month.SEPTEMBER, 30),
+                        LocalDate.of(1996, Month.JULY, 30),
+                        null)));
+        resume.setResumeSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("Санкт-Петербургский национальный исследовательский " +
+                        "университет информационных технологий, механики и оптики", "http://www.ifmo.ru/ru/",
+                        "Инженер (программист Fortran, C)",
+                        LocalDate.of(1987, Month.SEPTEMBER, 30),
+                        LocalDate.of(1993, Month.JULY, 30),
+                        null)));
+
 
     }
 
