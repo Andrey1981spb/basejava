@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws IOException {
         storage.save(RESUME_4);
         assertEquals(RESUME_4, storage.get(UUID_4));
         assertEquals(4, storage.size());
@@ -65,7 +66,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() {
+    public void delete() throws IOException {
         storage.delete(UUID_2);
         assertEquals(2, storage.size());
         storage.get(UUID_2);
@@ -77,7 +78,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void update() {
+    public void update() throws IOException {
         Resume resume = RESUME_1;
         storage.update(resume);
         Resume resumeCheck = storage.get(UUID_1);
@@ -85,12 +86,12 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void get() {
+    public void get() throws IOException {
         assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void getNotExist() {
+    public void getNotExist() throws IOException {
         storage.get(UUID_4);
     }
 
@@ -101,7 +102,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAll() throws IOException {
         List<Resume> resumeList = new ArrayList<>();
         resumeList.add(RESUME_1);
         resumeList.add(RESUME_2);

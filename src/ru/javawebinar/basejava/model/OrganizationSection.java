@@ -8,8 +8,8 @@ public class OrganizationSection extends AbstractSection {
 
     private List<Organization> organizations = new ArrayList<>();
 
-    public OrganizationSection(Organization organization) {
-        organizations.add(organization);
+    public OrganizationSection(List<Organization> organizations) {
+        this.organizations=organizations;
     }
 
     public List<Organization> getWorkStudyStringDates() {

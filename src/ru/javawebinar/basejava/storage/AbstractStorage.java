@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         doUpdate(resume, searchKey);
     }
 
-    public Resume get(String uuid) {
+    public Resume get(String uuid) throws IOException {
         LOG.info("Get " + uuid);
         SK searchKey = getSearchKeyIfNotExist(uuid);
         return doGet(searchKey);
@@ -49,13 +50,13 @@ public abstract class AbstractStorage<SK> implements Storage {
         return searchKey;
     }
 
-    public List<Resume> getAllSorted() {
+    public List<Resume> getAllSorted() throws IOException {
         List<Resume> resumeList = getList();
         resumeList.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         return resumeList;
     }
 
-    protected abstract List<Resume> getList();
+    protected abstract List<Resume> getList() throws IOException;
 
     protected abstract SK getSearchKey(String uuid);
 
@@ -67,6 +68,6 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK searchKey);
+    protected abstract Resume doGet(SK searchKey) throws IOException;
 
 }

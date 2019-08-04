@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.*;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private final Map<File, Resume> resumeFileMap = new HashMap<>();
     private File directory;
 
     protected AbstractFileStorage(File directory) {
@@ -23,8 +22,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected List<Resume> getList() {
-        return new ArrayList<>(resumeFileMap.values());
+    protected List<Resume> getList() throws IOException {
+        List<Resume> resumeList = new ArrayList<>();
+        for (File file : directory.listFiles()) {
+            resumeList.add(doGet(file));
+        }
+        return resumeList;
     }
 
     protected File getSearchKey(Object uuid) {
@@ -49,6 +52,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
 
+    protected abstract Resume doRead(File file) throws IOException;
+
     @Override
     protected void doDelete(File file) {
         file.delete();
@@ -64,17 +69,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected Resume doGet(File file) {
-        return resumeFileMap.get(file);
+    protected Resume doGet(File file)  {
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public void clear() {
-        resumeFileMap.clear();
+        for (File file : directory.listFiles()) {
+            file.delete();
+        }
     }
 
     @Override
     public int size() {
-        return resumeFileMap.size();
+        String[] list = directory.list();
+        return list.length;
     }
 }
