@@ -3,9 +3,10 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
@@ -22,16 +23,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected List<Resume> getList() throws IOException {
-        List<Resume> resumeList = new ArrayList<>();
-        for (File file : directory.listFiles()) {
-            resumeList.add(doGet(file));
-        }
-        return resumeList;
-    }
-
-    protected File getSearchKey(Object uuid) {
-        return new File(directory, (String) uuid);
+    protected File getSearchKey(String uuid) {
+        return new File(directory, uuid);
     }
 
     @Override
@@ -43,16 +36,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
-            doWrite(resume, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
-
+        doUpdate(resume, file);
     }
 
-    protected abstract void doWrite(Resume resume, File file) throws IOException;
+    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
 
-    protected abstract Resume doRead(File file) throws IOException;
+    protected abstract Resume doRead(InputStream is) throws IOException, ClassNotFoundException;
 
     @Override
     protected void doDelete(File file) {
@@ -62,20 +54,29 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            doWrite(resume, file);
+            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
     }
 
     @Override
-    protected Resume doGet(File file)  {
+    protected Resume doGet(File file) throws IOException, ClassNotFoundException {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected List<Resume> getList() throws IOException, ClassNotFoundException {
+        List<Resume> resumeList = new ArrayList<>();
+        for (File file : directory.listFiles()) {
+            resumeList.add(doGet(file));
+        }
+        return resumeList;
     }
 
     @Override

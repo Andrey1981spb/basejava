@@ -22,17 +22,15 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-
-        retriveFileName("basejava");
+        retriveFileName("basejava/src/ru/javawebinar/basejava/storage");
     }
-
 
     private static void retriveFileName(String root) {
         File dir = new File("../" + root);
         String[] list = dir.list();
         if (list != null) {
             for (String name : list) {
-                System.out.println(name);
+                System.out.println("  " + name);
                 retriveFileName("../" + name);
             }
         }

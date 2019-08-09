@@ -2,7 +2,10 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
 
@@ -52,6 +55,4 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     protected List<Resume> getList() {
         return new ArrayList<>(resumeFullNameMap.values());
     }
-
 }
-

@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    public void save(Resume resume) {
+    public void save(Resume resume) throws IOException {
         LOG.info("Save " + resume);
         SK searchKey = getSearchKey(resume.getUuid());
         if (isValid(searchKey)) {
@@ -35,7 +36,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         doUpdate(resume, searchKey);
     }
 
-    public Resume get(String uuid) throws IOException {
+    public Resume get(String uuid) throws IOException, ClassNotFoundException {
         LOG.info("Get " + uuid);
         SK searchKey = getSearchKeyIfNotExist(uuid);
         return doGet(searchKey);
@@ -44,30 +45,30 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getSearchKeyIfNotExist(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (!isValid(searchKey)) {
-            LOG.warning("Resume " + uuid + " already exist");
+            LOG.warning("Resume " + uuid + " not exist");
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    public List<Resume> getAllSorted() throws IOException {
+    public List<Resume> getAllSorted() throws IOException, ClassNotFoundException {
         List<Resume> resumeList = getList();
         resumeList.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         return resumeList;
     }
 
-    protected abstract List<Resume> getList() throws IOException;
+    protected abstract List<Resume> getList() throws IOException, ClassNotFoundException;
 
     protected abstract SK getSearchKey(String uuid);
 
     protected abstract boolean isValid(SK searchKey);
 
-    protected abstract void doSave(Resume resume, SK searchKey);
+    protected abstract void doSave(Resume resume, SK searchKey) throws StorageException, IOException;
 
     protected abstract void doDelete(SK searchKey);
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK searchKey) throws IOException;
+    protected abstract Resume doGet(SK searchKey) throws IOException, ClassNotFoundException;
 
 }

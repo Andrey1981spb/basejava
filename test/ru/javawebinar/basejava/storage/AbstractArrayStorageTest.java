@@ -5,6 +5,8 @@ import ru.javawebinar.basejava.model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
@@ -12,7 +14,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     }
 
     @Test ( expected = StorageException.class )
-    public void storageOverFlow() {
+    public void storageOverFlow() throws IOException {
         String fullName = "name";
         storage.clear();
         try {

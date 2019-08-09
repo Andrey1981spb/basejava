@@ -9,7 +9,7 @@ import java.io.IOException;
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new MapStorage();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         Resume r1 = new Resume("uuid1", "fullName1");
         Resume r2 = new Resume("uuid2", "fullName2");
         Resume r3 = new Resume("uuid3", "fullName3");
@@ -33,7 +33,7 @@ public class MainTestArrayStorage {
 
     }
 
-    static void printAll() throws IOException {
+    static void printAll() throws IOException, ClassNotFoundException {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);

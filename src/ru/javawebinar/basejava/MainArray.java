@@ -12,7 +12,7 @@ import java.util.List;
 public class MainArray {
     private final static Storage ARRAY_STORAGE = new MapStorage();
     private static String fullName;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;
 
@@ -66,7 +66,7 @@ public class MainArray {
 
     }
 
-    static void printAll() throws IOException {
+    static void printAll() throws IOException, ClassNotFoundException {
         List<Resume> resumeList= ARRAY_STORAGE.getAllSorted();
         System.out.println("----------------------------");
         if (resumeList.size() == 0) {
