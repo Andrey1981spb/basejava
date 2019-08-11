@@ -2,16 +2,19 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
+import ru.javawebinar.basejava.storage.serealizeUtil.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private File directory;
+    private Serializer serializer = new StreamSerializer();
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -42,10 +45,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         doUpdate(resume, file);
     }
 
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException, ClassNotFoundException;
-
     @Override
     protected void doDelete(File file) {
         file.delete();
@@ -54,26 +53,30 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializer.outSerialize(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
     }
 
     @Override
-    protected Resume doGet(File file) throws IOException, ClassNotFoundException {
+    protected Resume doGet(File file) throws IOException {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
-        } catch (IOException e) {
+            return serializer.inSerialize(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    protected List<Resume> getList() throws IOException, ClassNotFoundException {
+    protected List<Resume> getList() throws IOException {
         List<Resume> resumeList = new ArrayList<>();
-        for (File file : directory.listFiles()) {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Cant read", "files null");
+        }
+        for (File file : files) {
             resumeList.add(doGet(file));
         }
         return resumeList;
@@ -89,6 +92,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("Cant return size", "list is null");
+        }
         return list.length;
     }
 }

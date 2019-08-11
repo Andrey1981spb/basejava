@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class MarkedListSection extends AbstractSection {
 
+    private static final long serialVersionUID = 1L;
+
     private final List<String> performanseList = new ArrayList<>();
 
     public MarkedListSection(String data) {

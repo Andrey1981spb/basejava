@@ -15,8 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final String DIR = "../basejava/src/ru/javawebinar/basejava/resources";
-    protected static final File STORAGE_DIR = new File(DIR);
+    protected static final File STORAGE_DIR = new File("/Users/andrej/basejava/src/ru/javawebinar/basejava/resources");
 
     protected Storage storage;
 
@@ -52,7 +51,7 @@ public abstract class AbstractStorageTest {
         assertEquals(3, storage.size());
     }
 
-    @Test(expected = ExistStorageException.class)
+    @Test ( expected = ExistStorageException.class )
     public void saveExist() throws IOException {
         storage.save(RESUME_1);
     }
@@ -60,23 +59,23 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() throws IOException, ClassNotFoundException {
         storage.save(RESUME_4);
-        assertEquals(RESUME_4, storage.get(UUID_4));
+        assertEquals(RESUME_4, storage.get(RESUME_4.getUuid()));
         assertEquals(4, storage.size());
     }
 
-    @Test(expected = NotExistStorageException.class)
+    @Test ( expected = NotExistStorageException.class )
     public void deleteNotExist() {
         storage.delete(UUID_4);
     }
 
-    @Test(expected = NotExistStorageException.class)
+    @Test ( expected = NotExistStorageException.class )
     public void delete() throws IOException, ClassNotFoundException {
         storage.delete(UUID_2);
         assertEquals(2, storage.size());
         storage.get(UUID_2);
     }
 
-    @Test(expected = NotExistStorageException.class)
+    @Test ( expected = NotExistStorageException.class )
     public void updateNotExist() {
         storage.update(RESUME_4);
     }
@@ -94,7 +93,7 @@ public abstract class AbstractStorageTest {
         assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
-    @Test(expected = NotExistStorageException.class)
+    @Test ( expected = NotExistStorageException.class )
     public void getNotExist() throws IOException, ClassNotFoundException {
         storage.get(UUID_4);
     }

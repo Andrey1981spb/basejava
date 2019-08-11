@@ -41,7 +41,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public Resume doGet(Integer index) {
-        return storage[ index];
+        return storage[index];
     }
 
     @Override
@@ -61,7 +61,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected List<Resume> getList() {
-        Resume[] resumes = Arrays.copyOfRange(storage, 0, size);
-        return Arrays.asList(resumes);
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 }

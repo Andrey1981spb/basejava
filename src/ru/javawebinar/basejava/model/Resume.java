@@ -5,13 +5,12 @@ import java.util.*;
 
 public class Resume implements Comparable<Resume>, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String uuid;
     private String fullName;
     private final Map<SectionType, AbstractSection> resumeSections = new EnumMap<>(SectionType.class);
     private final Map<ContactType, String> contactInfoMap = new EnumMap<>(ContactType.class);
-
-    public Resume() {
-    }
 
     public Map<SectionType, AbstractSection> getResumeSections() {
         return resumeSections;
