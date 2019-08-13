@@ -3,7 +3,6 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
-import ru.javawebinar.basejava.storage.serealizeUtil.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,9 +11,9 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private Serializer serializer = new StreamSerializer();
+    private Serializer serializer;
 
-    protected FileStorage(File directory) {
+    protected FileStorage(File directory, Serializer serializer) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -23,6 +22,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
+        this.serializer = serializer;
     }
 
     @Override
@@ -60,17 +60,16 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected Resume doGet(File file) throws IOException {
+    protected Resume doGet(File file) {
         try {
             return serializer.inSerialize(new BufferedInputStream(new FileInputStream(file)));
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new StorageException("Error get path ", file.getName(), e);
         }
-        return null;
     }
 
     @Override
-    protected List<Resume> getList() throws IOException {
+    protected List<Resume> getList() {
         List<Resume> resumeList = new ArrayList<>();
         File[] files = directory.listFiles();
         if (files == null) {

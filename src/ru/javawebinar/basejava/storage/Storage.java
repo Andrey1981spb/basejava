@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -10,13 +9,13 @@ public interface Storage {
 
     void update(Resume resume);
 
-    void save(Resume resume) throws IOException;
+    void save(Resume resume);
 
-    Resume get(String uuid) throws IOException, ClassNotFoundException;
+    Resume get(String uuid);
 
     void delete(String uuid);
 
     int size();
 
-    List<Resume> getAllSorted() throws IOException, ClassNotFoundException;
+    List<Resume> getAllSorted();
 }

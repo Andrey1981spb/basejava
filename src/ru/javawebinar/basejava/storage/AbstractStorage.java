@@ -14,7 +14,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    public void save(Resume resume) throws IOException {
+    public void save(Resume resume) {
         LOG.info("Save " + resume);
         SK searchKey = getSearchKey(resume.getUuid());
         if (isValid(searchKey)) {
@@ -36,7 +36,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         doUpdate(resume, searchKey);
     }
 
-    public Resume get(String uuid) throws IOException, ClassNotFoundException {
+    public Resume get(String uuid) {
         LOG.info("Get " + uuid);
         SK searchKey = getSearchKeyIfNotExist(uuid);
         return doGet(searchKey);
@@ -51,24 +51,24 @@ public abstract class AbstractStorage<SK> implements Storage {
         return searchKey;
     }
 
-    public List<Resume> getAllSorted() throws IOException, ClassNotFoundException {
+    public List<Resume> getAllSorted() {
         List<Resume> resumeList = getList();
         resumeList.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         return resumeList;
     }
 
-    protected abstract List<Resume> getList() throws IOException, ClassNotFoundException;
+    protected abstract List<Resume> getList();
 
     protected abstract SK getSearchKey(String uuid);
 
     protected abstract boolean isValid(SK searchKey);
 
-    protected abstract void doSave(Resume resume, SK searchKey) throws StorageException, IOException;
+    protected abstract void doSave(Resume resume, SK searchKey);
 
     protected abstract void doDelete(SK searchKey);
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK searchKey) throws IOException, ClassNotFoundException;
+    protected abstract Resume doGet(SK searchKey);
 
 }

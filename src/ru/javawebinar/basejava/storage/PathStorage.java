@@ -3,26 +3,27 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
-import ru.javawebinar.basejava.storage.serealizeUtil.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private Serializer serializer = new StreamSerializer();
+    private Serializer serializer;
 
-    protected PathStorage(String dir) {
+    protected PathStorage(String dir, Serializer serializer) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
+        this.serializer = serializer;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             serializer.outSerialize(resume, new BufferedOutputStream(new FileOutputStream((path).toFile())));
         } catch (IOException e) {
-            throw new StorageException("Path write error", resume.getUuid(), e);
+            throw new StorageException("Path write error ", resume.getUuid(), e);
         }
     }
 
@@ -59,50 +60,41 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("File delete error", path.getFileName().toString(), e);
+            throw new StorageException("File delete error ", path.getFileName().toString(), e);
         }
     }
 
     @Override
-    protected Resume doGet(Path path) throws IOException {
+    protected Resume doGet(Path path) {
         try {
             return serializer.inSerialize(new BufferedInputStream(new FileInputStream(String.valueOf(path))));
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new StorageException("Error get path ", path.getFileName().toString(), e);
         }
-        return null;
     }
 
     @Override
-    protected List<Resume> getList() throws IOException {
-        List<Resume> resumeList = new ArrayList<>();
-        Files.list(directory).forEach(path -> {
-            try {
-                resumeList.add(doGet(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        return resumeList;
+    protected List<Resume> getList() {
+        return getDirectory().map(path -> doGet(path)).collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getDirectory().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
         long size;
-        try {
-            size = Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Path size error", null);
-        }
+        size = getDirectory().count();
         return (int) size;
+    }
+
+    private Stream<Path> getDirectory() {
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Get directory error", null);
+        }
     }
 }

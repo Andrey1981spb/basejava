@@ -63,4 +63,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected List<Resume> getList() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
+
 }

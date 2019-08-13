@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("/Users/andrej/basejava/src/ru/javawebinar/basejava/resources");
+    protected static final File STORAGE_DIR = new File("../basejava/src/ru/javawebinar/basejava/resources");
 
     protected Storage storage;
 
@@ -57,7 +58,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void save() throws IOException, ClassNotFoundException {
+    public void save() {
         storage.save(RESUME_4);
         assertEquals(RESUME_4, storage.get(RESUME_4.getUuid()));
         assertEquals(4, storage.size());
@@ -69,7 +70,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test ( expected = NotExistStorageException.class )
-    public void delete() throws IOException, ClassNotFoundException {
+    public void delete() {
         storage.delete(UUID_2);
         assertEquals(2, storage.size());
         storage.get(UUID_2);
@@ -81,7 +82,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void update() throws IOException, ClassNotFoundException {
+    public void update() {
         Resume resume = RESUME_1;
         storage.update(resume);
         Resume resumeCheck = storage.get(UUID_1);
@@ -89,12 +90,12 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void get() throws IOException, ClassNotFoundException {
+    public void get() {
         assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
     @Test ( expected = NotExistStorageException.class )
-    public void getNotExist() throws IOException, ClassNotFoundException {
+    public void getNotExist() {
         storage.get(UUID_4);
     }
 
@@ -105,7 +106,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws IOException, ClassNotFoundException {
+    public void getAll() {
         List<Resume> resumeList = new ArrayList<>();
         resumeList.add(RESUME_1);
         resumeList.add(RESUME_2);
