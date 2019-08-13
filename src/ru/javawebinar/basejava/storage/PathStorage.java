@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
+import ru.javawebinar.basejava.storage.serializeUtil.Serializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -75,7 +75,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getList() {
-        return getDirectory().map(path -> doGet(path)).collect(Collectors.toList());
+        return getDirectory().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override

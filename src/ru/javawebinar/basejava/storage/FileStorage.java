@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serealizeUtil.Serializer;
+import ru.javawebinar.basejava.storage.serializeUtil.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -83,8 +83,11 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file : directory.listFiles()) {
-            file.delete();
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
         }
     }
 

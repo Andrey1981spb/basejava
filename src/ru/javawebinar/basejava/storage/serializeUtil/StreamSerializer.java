@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage.serealizeUtil;
+package ru.javawebinar.basejava.storage.serializeUtil;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
