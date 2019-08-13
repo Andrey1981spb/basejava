@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava;
+package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.*;
 
@@ -7,16 +7,19 @@ import java.time.Month;
 import java.util.*;
 
 public class ResumeTestData {
-    private static final Resume resume = new Resume("Grigory Kislin");
+  private static final Resume RESUME = new Resume();
 
     public static void main(String[] args) {
-        fillResume();
+        getRESUME("uuid", "Grigory Kislin");
         checkResume();
     }
 
-    private static void fillResume() {
+    public static Resume getRESUME(String uuid, String fullName) {
 
-        Map<ContactType, String> contactInfoMap = resume.getContactInfoMap();
+        RESUME.setUuid(uuid);
+        RESUME.setFullName(fullName);
+
+        Map<ContactType, String> contactInfoMap = RESUME.getContactInfoMap();
 
         contactInfoMap.put(ContactType.TELEPHONE, "+7(921) 855-0482");
         contactInfoMap.put(ContactType.SKYPE, "grigory.kislin");
@@ -27,29 +30,31 @@ public class ResumeTestData {
         contactInfoMap.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
 
-        resume.setResumeSections(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, " +
+        RESUME.setResumeSections(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, " +
                 "сильная логика, креативность, инициативность.Пурист кода и архитектуры."));
-        resume.setResumeSections(SectionType.OBJECTIVE, new SimpleTextSection("Ведущий стажировок и " +
+        RESUME.setResumeSections(SectionType.OBJECTIVE, new SimpleTextSection("Ведущий стажировок и " +
                 "корпоративного обучения по Java Web и Enterprise технологиям.\n"));
 
-        resume.setResumeSections(SectionType.ACHIEVEMENT,
+        RESUME.setResumeSections(SectionType.ACHIEVEMENT,
                 new MarkedListSection("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
                         "\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                         "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n"));
-        resume.setResumeSections(SectionType.ACHIEVEMENT,
+        RESUME.setResumeSections(SectionType.ACHIEVEMENT,
                 new MarkedListSection("Реализация двухфакторной аутентификации для онлайн платформы " +
                         "управления проектами Wrike. Интеграция с Twilio, " +
                         "DuoSecurity, Google Authenticator, Jira, Zendesk."));
 
-        resume.setResumeSections(SectionType.QUALIFICATIONS,
+        RESUME.setResumeSections(SectionType.QUALIFICATIONS,
                 new MarkedListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2"));
-        resume.setResumeSections(SectionType.QUALIFICATIONS,
+        RESUME.setResumeSections(SectionType.QUALIFICATIONS,
                 new MarkedListSection("Version control: Subversion, Git, Mercury, ClearCase, Perforce"));
 
 
-        resume.setResumeSections(SectionType.EXPERIENCE, fillExperience());
+        RESUME.setResumeSections(SectionType.EXPERIENCE, fillExperience());
 
-        resume.setResumeSections(SectionType.EDUCATION, fillEducation());
+        RESUME.setResumeSections(SectionType.EDUCATION, fillEducation());
+
+        return RESUME;
 
     }
 
@@ -107,13 +112,13 @@ public class ResumeTestData {
     }
 
     private static void checkResume() {
-        System.out.println(resume.getFullName());
+        System.out.println(RESUME.getFullName());
 
-        for (Map.Entry<ContactType, String> entry : resume.getContactInfoMap().entrySet()) {
+        for (Map.Entry<ContactType, String> entry : RESUME.getContactInfoMap().entrySet()) {
             System.out.println(entry.getValue());
         }
 
-        for (Map.Entry<SectionType, AbstractSection> entry : resume.getResumeSections().entrySet()) {
+        for (Map.Entry<SectionType, AbstractSection> entry : RESUME.getResumeSections().entrySet()) {
             System.out.println(entry.getValue());
         }
     }
