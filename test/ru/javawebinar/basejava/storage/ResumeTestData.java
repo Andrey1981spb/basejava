@@ -7,108 +7,53 @@ import java.time.Month;
 import java.util.*;
 
 public class ResumeTestData {
-  private static final Resume RESUME = new Resume();
+    private static Resume RESUME;
 
     public static void main(String[] args) {
-        getRESUME("uuid", "Grigory Kislin");
+        getResume("uuid", "Grigory Kislin");
         checkResume();
     }
 
-    public static Resume getRESUME(String uuid, String fullName) {
+    public static Resume getResume(String uuid, String fullName) {
 
-        RESUME.setUuid(uuid);
-        RESUME.setFullName(fullName);
+        RESUME = new Resume(uuid, fullName);
 
-        Map<ContactType, String> contactInfoMap = RESUME.getContactInfoMap();
+        RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
+        RESUME.addContact(ContactType.TELEPHONE, "11111");
+        RESUME.addContact(ContactType.SKYPE, "skype2");
+        RESUME.addContact(ContactType.TELEPHONE, "22222");
+        RESUME.addSections(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
+        RESUME.addSections(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
+        RESUME.addSections(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
+        RESUME.addSections(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
+        RESUME.addSections(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Organization11", "http://Organization11.ru",
+                                new Organization.Position("Position2",
+                                        LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проета"),
+                                new Organization.Position("Position1",
+                                        LocalDate.of(2011, Month.OCTOBER, 30),
+                                        LocalDate.of(2013, Month.OCTOBER, 30), "Автор проета")
+                        )));
 
-        contactInfoMap.put(ContactType.TELEPHONE, "+7(921) 855-0482");
-        contactInfoMap.put(ContactType.SKYPE, "grigory.kislin");
-        contactInfoMap.put(ContactType.MAIL, "gkislin@yandex.ru");
-        contactInfoMap.put(ContactType.PROFILE_LINKED_IN, "profile LinkedIn");
-        contactInfoMap.put(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
-        contactInfoMap.put(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
-        contactInfoMap.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
-
-
-        RESUME.setResumeSections(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, " +
-                "сильная логика, креативность, инициативность.Пурист кода и архитектуры."));
-        RESUME.setResumeSections(SectionType.OBJECTIVE, new SimpleTextSection("Ведущий стажировок и " +
-                "корпоративного обучения по Java Web и Enterprise технологиям.\n"));
-
-        RESUME.setResumeSections(SectionType.ACHIEVEMENT,
-                new MarkedListSection("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
-                        "\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
-                        "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n"));
-        RESUME.setResumeSections(SectionType.ACHIEVEMENT,
-                new MarkedListSection("Реализация двухфакторной аутентификации для онлайн платформы " +
-                        "управления проектами Wrike. Интеграция с Twilio, " +
-                        "DuoSecurity, Google Authenticator, Jira, Zendesk."));
-
-        RESUME.setResumeSections(SectionType.QUALIFICATIONS,
-                new MarkedListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2"));
-        RESUME.setResumeSections(SectionType.QUALIFICATIONS,
-                new MarkedListSection("Version control: Subversion, Git, Mercury, ClearCase, Perforce"));
-
-
-        RESUME.setResumeSections(SectionType.EXPERIENCE, fillExperience());
-
-        RESUME.setResumeSections(SectionType.EDUCATION, fillEducation());
+        RESUME.addSections(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Institute", null,
+                                new Organization.Position("aspirant", LocalDate.of(1996, Month.OCTOBER, 30),
+                                        LocalDate.of(2000, Month.OCTOBER, 30),
+                                        null),
+                                new Organization.Position("student", LocalDate.of(1996, Month.OCTOBER, 30),
+                                        LocalDate.of(2000, Month.OCTOBER, 30),
+                                        null)),
+                        new Organization("Organization12", "http://Organization12.ru")));
+        RESUME.addSections(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Organization2", "http://Organization2.ru",
+                                new Organization.Position("Position", LocalDate.of(2008, Month.OCTOBER, 30),
+                                        LocalDate.of(2011, Month.OCTOBER, 30),
+                                        "content1"))));
 
         return RESUME;
-
-    }
-
-    private static OrganizationSection fillExperience() {
-        List<Organization> organizations = new ArrayList<>();
-
-        Position position1 = new Position("Java Online Projects",
-                LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проекта.\n" +
-                "10/2013 - Сейчас\tСоздание, организация и проведение Java онлайн проектов и стажировок.");
-
-        Organization organization1 = new Organization("Java Online Projects",
-                "http://javaops.ru/", new ArrayList<Position>() {{
-            add(position1);
-        }});
-
-        Position position2 = new Position("Java Online Projects",
-                LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проекта.\n" +
-                "10/2013 - Сейчас\tСоздание, организация и проведение Java онлайн проектов и стажировок.");
-
-        Organization organization2 = new Organization("Java Online Projects",
-                "http://javaops.ru/", new ArrayList<Position>() {{
-            add(position2);
-        }});
-
-        organizations.add(organization1);
-        organizations.add(organization2);
-
-        return new OrganizationSection(organizations);
-
-    }
-
-
-    private static OrganizationSection fillEducation() {
-        List<Organization> organizations = new ArrayList<>();
-
-        Position position1 = new Position("Аспирантура (программист С, С++)",
-                LocalDate.of(1993, Month.SEPTEMBER, 30),
-                LocalDate.of(1996, Month.JULY, 30),
-                null);
-
-        Position position2 = new Position("Инженер (программист Fortran, C)",
-                LocalDate.of(1987, Month.SEPTEMBER, 30),
-                LocalDate.of(1993, Month.JULY, 30),
-                null);
-
-        Organization organization1 = new Organization("Санкт-Петербургский национальный исследовательский " +
-                "университет информационных технологий, механики и оптики", "http://www.ifmo.ru/ru/", new ArrayList<Position>() {{
-            add(position1);
-            add(position2);
-        }});
-
-        organizations.add(organization1);
-
-        return new OrganizationSection(organizations);
     }
 
     private static void checkResume() {

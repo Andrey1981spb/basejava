@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,10 +9,15 @@ public class MarkedListSection extends AbstractSection {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<String> performanseList = new ArrayList<>();
+    private List<String> performanseList;
 
-    public MarkedListSection(String data) {
-        performanseList.add(data);
+    public MarkedListSection(String... items) {
+        this(Arrays.asList(items));
+    }
+
+    public MarkedListSection(List<String> performanseList) {
+        Objects.requireNonNull(performanseList, "items must not be null");
+        this.performanseList = performanseList;
     }
 
     public List<String> getPerformanceList() {

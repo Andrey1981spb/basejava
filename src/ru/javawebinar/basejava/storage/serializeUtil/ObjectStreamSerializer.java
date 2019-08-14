@@ -5,13 +5,12 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class StreamSerializer implements Serializer {
+public class ObjectStreamSerializer implements Serializer {
 
     @Override
-    public ObjectOutput outSerialize(Resume resume, OutputStream os) throws IOException {
+    public void outSerialize(Resume resume, OutputStream os) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(resume);
-        return oos;
     }
 
     @Override

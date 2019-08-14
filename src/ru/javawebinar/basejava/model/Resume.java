@@ -1,10 +1,14 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
+@XmlRootElement
+@XmlAccessorType ( XmlAccessType.FIELD )
 public class Resume implements Comparable<Resume>, Serializable {
-
     private static final long serialVersionUID = 1L;
 
     private String uuid;
@@ -13,16 +17,15 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final Map<SectionType, AbstractSection> resumeSections = new EnumMap<>(SectionType.class);
     private final Map<ContactType, String> contactInfoMap = new EnumMap<>(ContactType.class);
 
-    public Resume() {
-
-    }
-
     public Map<SectionType, AbstractSection> getResumeSections() {
         return resumeSections;
     }
 
     public Map<ContactType, String> getContactInfoMap() {
         return contactInfoMap;
+    }
+
+    public Resume() {
     }
 
     public Resume(String fullName) {
@@ -34,8 +37,20 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName;
     }
 
-    public void setResumeSections(SectionType sectionType, AbstractSection resumeSection) {
+    public String getContact(ContactType type) {
+        return contactInfoMap.get(type);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return resumeSections.get(type);
+    }
+
+    public void addSections(SectionType sectionType, AbstractSection resumeSection) {
         resumeSections.put(sectionType, resumeSection);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contactInfoMap.put(type, value);
     }
 
     public String getUuid() {
@@ -44,14 +59,6 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public String getFullName() {
         return fullName;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     @Override

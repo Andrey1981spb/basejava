@@ -6,7 +6,7 @@ import java.io.*;
 
 public interface Serializer {
 
-    ObjectOutput outSerialize(Resume resume, OutputStream os) throws IOException;
+    void outSerialize(Resume resume, OutputStream os) throws IOException;
 
     Resume inSerialize(InputStream in) throws IOException;
 
