@@ -45,7 +45,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return resumeSections.get(type);
     }
 
-    public void addSections(SectionType sectionType, AbstractSection resumeSection) {
+    public void addSection(SectionType sectionType, AbstractSection resumeSection) {
         resumeSections.put(sectionType, resumeSection);
     }
 
@@ -71,13 +71,15 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
+        return uuid.equals(resume.uuid) &&
+                fullName.equals(resume.fullName) &&
+                resumeSections.equals(resume.resumeSections) &&
+                contactInfoMap.equals(resume.contactInfoMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(uuid, fullName, resumeSections, contactInfoMap);
     }
 
     @Override

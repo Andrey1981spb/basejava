@@ -22,11 +22,11 @@ public class ResumeTestData {
         RESUME.addContact(ContactType.TELEPHONE, "11111");
         RESUME.addContact(ContactType.SKYPE, "skype2");
         RESUME.addContact(ContactType.TELEPHONE, "22222");
-        RESUME.addSections(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
-        RESUME.addSections(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
-        RESUME.addSections(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
-        RESUME.addSections(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
-        RESUME.addSections(SectionType.EXPERIENCE,
+        RESUME.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
+        RESUME.addSection(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
+        RESUME.addSection(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
+        RESUME.addSection(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
+        RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
                                 new Organization.Position("Position2",
@@ -36,7 +36,7 @@ public class ResumeTestData {
                                         LocalDate.of(2013, Month.OCTOBER, 30), "Автор проета")
                         )));
 
-        RESUME.addSections(SectionType.EDUCATION,
+        RESUME.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Institute", null,
                                 new Organization.Position("aspirant", LocalDate.of(1996, Month.OCTOBER, 30),
@@ -46,7 +46,7 @@ public class ResumeTestData {
                                         LocalDate.of(2000, Month.OCTOBER, 30),
                                         null)),
                         new Organization("Organization12", "http://Organization12.ru")));
-        RESUME.addSections(SectionType.EXPERIENCE,
+        RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization2", "http://Organization2.ru",
                                 new Organization.Position("Position", LocalDate.of(2008, Month.OCTOBER, 30),

@@ -23,6 +23,7 @@ public class MainFile {
         }
 
         retriveFileName("basejava/src/ru/javawebinar/basejava/storage");
+        System.out.println(new File("../basejava/storage").getAbsolutePath());
 
     }
 

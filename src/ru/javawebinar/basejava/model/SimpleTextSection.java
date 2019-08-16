@@ -8,6 +8,9 @@ public class SimpleTextSection extends AbstractSection {
 
     private String position;
 
+    public SimpleTextSection() {
+    }
+
     public SimpleTextSection(String position) {
         this.position = position;
     }

@@ -28,6 +28,10 @@ public class Organization implements Serializable {
         this.positionList = positionList;
     }
 
+    public Link getHomePage() {
+        return homePage;
+    }
+
     public List<Position> getPositionList() {
         return positionList;
     }
@@ -71,6 +75,38 @@ public class Organization implements Serializable {
             this.title = title;
             this.dateOfEntry = dateOfEntry;
             this.dateOfExit = dateOfExit;
+            this.description = description;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public LocalDate getDateOfEntry() {
+            return dateOfEntry;
+        }
+
+        public void setDateOfEntry(LocalDate dateOfEntry) {
+            this.dateOfEntry = dateOfEntry;
+        }
+
+        public LocalDate getDateOfExit() {
+            return dateOfExit;
+        }
+
+        public void setDateOfExit(LocalDate dateOfExit) {
+            this.dateOfExit = dateOfExit;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
             this.description = description;
         }
 

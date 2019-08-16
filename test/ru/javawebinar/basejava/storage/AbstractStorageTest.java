@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("../basejava/storage");
+    //   protected static final File STORAGE_DIR = new File("../basejava/storage");
+    protected static final File STORAGE_DIR = new File("/Users/andrej/basejava/storage");
 
     protected Storage storage;
 
@@ -83,10 +85,12 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = RESUME_1;
+        Resume resume = new Resume(UUID_1, "fullName1");
         storage.update(resume);
-        Resume resumeCheck = storage.get(UUID_1);
-        Assert.assertSame(resumeCheck, resume);
+        assertTrue(resume.equals(storage.get(UUID_1)));
+        Resume resume2 = ResumeTestData.getResume(UUID_1, "fullName1");
+        storage.update(resume2);
+        assertTrue(resume2.equals(storage.get(UUID_1)));
     }
 
     @Test

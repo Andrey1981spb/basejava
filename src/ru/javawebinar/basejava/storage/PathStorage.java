@@ -33,7 +33,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean isValid(Path path) {
-        return path.toFile().exists();
+        return Files.isRegularFile(path);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            serializer.outSerialize(resume, new BufferedOutputStream(new FileOutputStream((path).toFile())));
+            serializer.outSerialize(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error ", resume.getUuid(), e);
         }
@@ -67,7 +67,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return serializer.inSerialize(new BufferedInputStream(new FileInputStream(String.valueOf(path))));
+            return serializer.inSerialize(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Error get path ", path.getFileName().toString(), e);
         }
@@ -94,7 +94,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Get directory error", null);
+            throw new StorageException("Get directory error", e);
         }
     }
 }
