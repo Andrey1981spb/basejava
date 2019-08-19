@@ -9,8 +9,9 @@ public class ObjectStreamSerializer implements Serializer {
 
     @Override
     public void outSerialize(Resume resume, OutputStream os) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeObject(resume);
+        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
+            oos.writeObject(resume);
+        }
     }
 
     @Override

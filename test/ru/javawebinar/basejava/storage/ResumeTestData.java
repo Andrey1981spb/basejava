@@ -38,13 +38,13 @@ public class ResumeTestData {
 
         RESUME.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Organization("Institute", null,
+                        new Organization("Institute", "http://Organization2.ru",
                                 new Organization.Position("aspirant", LocalDate.of(1996, Month.OCTOBER, 30),
                                         LocalDate.of(2000, Month.OCTOBER, 30),
-                                        null),
+                                        "aspirant"),
                                 new Organization.Position("student", LocalDate.of(1996, Month.OCTOBER, 30),
                                         LocalDate.of(2000, Month.OCTOBER, 30),
-                                        null)),
+                                        "aspirant")),
                         new Organization("Organization12", "http://Organization12.ru")));
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(

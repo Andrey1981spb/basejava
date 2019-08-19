@@ -13,6 +13,9 @@ public class OrganizationSection extends AbstractSection {
 
     private List<Organization> organizations = new ArrayList<>();
 
+    public OrganizationSection() {
+    }
+
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
     }

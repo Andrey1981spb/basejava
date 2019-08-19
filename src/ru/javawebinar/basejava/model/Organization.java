@@ -19,6 +19,9 @@ public class Organization implements Serializable {
     private Link homePage;
     private List<Position> positionList = new ArrayList<>();
 
+    public Organization() {
+    }
+
     public Organization(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
@@ -60,7 +63,7 @@ public class Organization implements Serializable {
     }
 
     @XmlAccessorType ( XmlAccessType.FIELD )
-    public static class Position {
+    public static class Position implements Serializable {
 
         String title;
         @XmlJavaTypeAdapter ( LocalDateAdapter.class )
@@ -68,6 +71,9 @@ public class Organization implements Serializable {
         @XmlJavaTypeAdapter ( LocalDateAdapter.class )
         LocalDate dateOfExit;
         String description;
+
+        public Position() {
+        }
 
         public Position(String title, LocalDate dateOfEntry, LocalDate dateOfExit, String description) {
             Objects.requireNonNull(dateOfEntry, "dateOfEntry must not be null");

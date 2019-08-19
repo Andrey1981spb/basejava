@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +9,9 @@ public class MarkedListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
     private List<String> performanseList;
+
+    public MarkedListSection() {
+    }
 
     public MarkedListSection(String... items) {
         this(Arrays.asList(items));
@@ -39,6 +41,6 @@ public class MarkedListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return  String.valueOf(performanseList);
+        return String.valueOf(performanseList);
     }
 }
