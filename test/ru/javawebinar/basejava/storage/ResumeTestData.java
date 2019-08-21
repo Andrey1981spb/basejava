@@ -44,8 +44,8 @@ public class ResumeTestData {
                                         "aspirant"),
                                 new Organization.Position("student", LocalDate.of(1996, Month.OCTOBER, 30),
                                         LocalDate.of(2000, Month.OCTOBER, 30),
-                                        "aspirant")),
-                        new Organization("Organization12", "http://Organization12.ru")));
+                                        "aspirant"))
+                ));
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization2", "http://Organization2.ru",

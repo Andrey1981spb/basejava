@@ -23,8 +23,9 @@ public class DataStreamSerializer implements Serializer {
                 dos.writeUTF(entry.getValue());
             }
 
-
-            for (Entry<SectionType, AbstractSection> entry : resume.getResumeSections().entrySet()) {
+            Map<SectionType, AbstractSection> sections = resume.getResumeSections();
+            dos.writeInt(sections.size());
+            for (Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
                 SectionType sectionType = entry.getKey();
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(sectionType.name());
@@ -102,12 +103,8 @@ public class DataStreamSerializer implements Serializer {
                 List<Organization> organizations = new ArrayList<>(size);
                 for (int i = 0; i < size; i++) {
                     organizations.add(
-                            new Organization(dis.readUTF(), dis.readUTF(),
-                                    new Organization.Position(dis.readUTF(),
-                                            LocalDate.of(dis.readInt(), dis.readInt(), dis.readInt()),
-                                            LocalDate.of(dis.readInt(), dis.readInt(), dis.readInt()),
-                                            dis.readUTF()
-                                    )
+                            new Organization(new Link(dis.readUTF(), dis.readUTF()),
+                                    readPosition(dis)
                             )
                     );
                     return new OrganizationSection(organizations);
@@ -116,10 +113,26 @@ public class DataStreamSerializer implements Serializer {
         return null;
     }
 
+    private List<Organization.Position> readPosition(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        List<Organization.Position> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(new Organization.Position(dis.readUTF(),
+                    doReadLocalDate(dis), doReadLocalDate(dis),
+                    dis.readUTF()
+            ));
+        }
+        return list;
+    }
+
     private void doWriteLocalDate(DataOutputStream dos, LocalDate localDate) throws IOException {
         dos.writeInt(localDate.getYear());
         dos.writeInt(localDate.getMonth().getValue());
         dos.writeInt(localDate.getDayOfWeek().getValue());
+    }
+
+    private LocalDate doReadLocalDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), dis.readInt(), dis.readInt());
     }
 
 }
