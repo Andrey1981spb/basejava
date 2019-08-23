@@ -33,17 +33,17 @@ public class DataStreamSerializer implements Serializer {
                                 break;
                             case ACHIEVEMENT:
                             case QUALIFICATIONS:
-                                writeWithException(dos, ((MarkedListSection) section).getPerformanceList(), dos::writeUTF);
+                                DataStreamSerializer.this.writeWithException(dos, ((MarkedListSection) section).getPerformanceList(), dos::writeUTF);
                                 break;
                             case EXPERIENCE:
                             case EDUCATION:
-                                writeWithException(dos, ((OrganizationSection) section).getWorkStudyStringDates(), org -> {
+                                DataStreamSerializer.this.writeWithException(dos, ((OrganizationSection) section).getWorkStudyStringDates(), org -> {
                                     dos.writeUTF(org.getHomePage().getName());
                                     dos.writeUTF(org.getHomePage().getUrl());
-                                    writeWithException(dos, org.getPositionList(), position -> {
+                                    DataStreamSerializer.this.writeWithException(dos, org.getPositionList(), position -> {
                                         dos.writeUTF(position.getTitle());
-                                        doWriteLocalDate(dos, position.getDateOfEntry());
-                                        doWriteLocalDate(dos, position.getDateOfExit());
+                                        DataStreamSerializer.this.doWriteLocalDate(dos, position.getDateOfEntry());
+                                        DataStreamSerializer.this.doWriteLocalDate(dos, position.getDateOfExit());
                                         dos.writeUTF(position.getDescription());
                                     });
                                 });
@@ -56,7 +56,7 @@ public class DataStreamSerializer implements Serializer {
     }
 
     private <T> void writeWithException(DataOutputStream dos, Collection<T> collection,
-                                       EntryWriter<T> elementWriter) throws IOException {
+                                        EntryWriter<T> elementWriter) throws IOException {
         dos.writeInt(collection.size());
         for (T item : collection) {
             elementWriter.writeEntry(item);
@@ -74,15 +74,11 @@ public class DataStreamSerializer implements Serializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 resume.addSection(sectionType, doReadSections(dis, sectionType));
-            }
+            });
             return resume;
         }
     }
@@ -94,39 +90,45 @@ public class DataStreamSerializer implements Serializer {
                 return new SimpleTextSection(dis.readUTF());
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                int size = dis.readInt();
-                List<String> stringList = new ArrayList<>(size);
-                for (int i = 0; i < size; i++) {
-                    stringList.add(dis.readUTF());
-                }
-                return new MarkedListSection(stringList);
+                return new MarkedListSection(readToList(dis, dis::readUTF));
             case EXPERIENCE:
             case EDUCATION:
-                size = dis.readInt();
-                List<Organization> organizations = new ArrayList<>(size);
-                for (int i = 0; i < size; i++) {
-                    organizations.add(
-                            new Organization(new Link(dis.readUTF(), dis.readUTF()),
-                                    readPosition(dis)
-                            )
-                    );
-                    return new OrganizationSection(organizations);
-                }
+                return new OrganizationSection(
+                        readToList(dis, () -> new Organization(
+                                new Link(dis.readUTF(), dis.readUTF()),
+                                readToList(dis, () -> new Organization.Position(
+                                        dis.readUTF(),
+                                        doReadLocalDate(dis), doReadLocalDate(dis),
+                                        dis.readUTF()
+                                ))
+                        )));
+            default:
+                throw new IllegalStateException();
         }
-        return null;
     }
 
-
-    private List<Organization.Position> readPosition(DataInputStream dis) throws IOException {
+    private void readWithException(DataInputStream dis, ReadUtil readUtil) throws IOException {
         int size = dis.readInt();
-        List<Organization.Position> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            list.add(new Organization.Position(dis.readUTF(),
-                    doReadLocalDate(dis), doReadLocalDate(dis),
-                    dis.readUTF()
-            ));
+            readUtil.util();
+        }
+    }
+
+    private <T> List<T> readToList(DataInputStream dis, ListReader<T> listReader) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(listReader.read());
         }
         return list;
+    }
+
+    private interface ReadUtil {
+        void util() throws IOException;
+    }
+
+    private interface ListReader<T> {
+        T read() throws IOException;
     }
 
     private void doWriteLocalDate(DataOutputStream dos, LocalDate localDate) throws IOException {
