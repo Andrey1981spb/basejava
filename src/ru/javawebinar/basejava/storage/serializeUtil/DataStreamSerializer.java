@@ -107,10 +107,10 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
-    private void readWithException(DataInputStream dis, ReadUtil readUtil) throws IOException {
+    private void readWithException(DataInputStream dis, ElementProcessor elementProcessor) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
-            readUtil.util();
+            elementProcessor.read();
         }
     }
 
@@ -123,8 +123,8 @@ public class DataStreamSerializer implements Serializer {
         return list;
     }
 
-    private interface ReadUtil {
-        void util() throws IOException;
+    private interface ElementProcessor {
+        void read() throws IOException;
     }
 
     private interface ListReader<T> {
