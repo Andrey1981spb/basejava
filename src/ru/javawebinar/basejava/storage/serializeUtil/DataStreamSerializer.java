@@ -33,17 +33,17 @@ public class DataStreamSerializer implements Serializer {
                                 break;
                             case ACHIEVEMENT:
                             case QUALIFICATIONS:
-                                DataStreamSerializer.this.writeWithException(dos, ((MarkedListSection) section).getPerformanceList(), dos::writeUTF);
+                                this.writeWithException(dos, ((MarkedListSection) section).getPerformanceList(), dos::writeUTF);
                                 break;
                             case EXPERIENCE:
                             case EDUCATION:
-                                DataStreamSerializer.this.writeWithException(dos, ((OrganizationSection) section).getWorkStudyStringDates(), org -> {
+                                this.writeWithException(dos, ((OrganizationSection) section).getWorkStudyStringDates(), org -> {
                                     dos.writeUTF(org.getHomePage().getName());
                                     dos.writeUTF(org.getHomePage().getUrl());
-                                    DataStreamSerializer.this.writeWithException(dos, org.getPositionList(), position -> {
+                                    this.writeWithException(dos, org.getPositionList(), position -> {
                                         dos.writeUTF(position.getTitle());
-                                        DataStreamSerializer.this.doWriteLocalDate(dos, position.getDateOfEntry());
-                                        DataStreamSerializer.this.doWriteLocalDate(dos, position.getDateOfExit());
+                                        this.doWriteLocalDate(dos, position.getDateOfEntry());
+                                        this.doWriteLocalDate(dos, position.getDateOfExit());
                                         dos.writeUTF(position.getDescription());
                                     });
                                 });
