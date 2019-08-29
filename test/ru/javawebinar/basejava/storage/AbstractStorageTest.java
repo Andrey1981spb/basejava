@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.util.Config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    //   protected static final File STORAGE_DIR = new File("../basejava/storage");
-    protected static final File STORAGE_DIR = new File("/Users/andrej/basejava/storage");
+
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
 
