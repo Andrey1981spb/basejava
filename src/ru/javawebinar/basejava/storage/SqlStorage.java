@@ -32,7 +32,7 @@ public class SqlStorage implements Storage {
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            return new Resume(uuid, rs.getString("full_name"));
+            return new Resume(rs.getString("uuid").trim(), rs.getString("full_name"));
         });
     }
 
@@ -41,19 +41,22 @@ public class SqlStorage implements Storage {
         sqlHelper.doQuery(connectionFactory, "UPDATE resume SET full_name=? WHERE uuid=?", (SQLHelper.SQLProcessor) statement -> {
             statement.setString(1, resume.getFullName());
             statement.setString(2, resume.getUuid());
-            statement.execute();
+            if (statement.executeUpdate() == 0) {
+                throw new NotExistStorageException(resume.getUuid());
+            }
             return null;
         });
     }
 
     @Override
     public void save(Resume resume) {
-        sqlHelper.doQuery(connectionFactory, "INSERT INTO resume (uuid, full_name) VALUES (?,?)", (SQLHelper.SQLProcessor) statement -> {
-            statement.setString(1, resume.getUuid());
-            statement.setString(2, resume.getFullName());
-            statement.execute();
-            return null;
-        });
+        sqlHelper.doQuery(connectionFactory,
+                "INSERT INTO resume (uuid, full_name) VALUES (?,?)", (SQLHelper.SQLProcessor) statement -> {
+                    statement.setString(1, resume.getUuid());
+                    statement.setString(2, resume.getFullName());
+                    statement.execute();
+                    return null;
+                });
     }
 
     @Override
@@ -69,24 +72,27 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return (List<Resume>) sqlHelper.doQuery(connectionFactory, "SELECT * FROM resume", (SQLHelper.SQLProcessor) statement -> {
-            List<Resume> list = new ArrayList<>();
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
-            }
-            return list;
-        });
+        return (List<Resume>) sqlHelper.doQuery(connectionFactory,
+                "SELECT * FROM resume", (SQLHelper.SQLProcessor) statement -> {
+                    ResultSet rs = statement.executeQuery();
+                    List<Resume> list = new ArrayList<>();
+                    while (rs.next()) {
+                        list.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name")));
+                    }
+                    return list;
+                });
     }
 
     @Override
     public int size() {
         return (int) sqlHelper.doQuery(connectionFactory, "SELECT count(*) FROM resume", (SQLHelper.SQLProcessor) statement -> {
             ResultSet rs = statement.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 return rs.getInt(1);
-            } return null;
+            }
+            return null;
         });
     }
+
 
 }

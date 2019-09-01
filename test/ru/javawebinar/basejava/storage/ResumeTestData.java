@@ -17,7 +17,7 @@ public class ResumeTestData {
     public static Resume getResume(String uuid, String fullName) {
 
         RESUME = new Resume(uuid, fullName);
-
+/*
         RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
         RESUME.addContact(ContactType.TELEPHONE, "11111");
         RESUME.addContact(ContactType.SKYPE, "skype2");
@@ -52,6 +52,8 @@ public class ResumeTestData {
                                 new Organization.Position("Position", LocalDate.of(2008, Month.OCTOBER, 30),
                                         LocalDate.of(2011, Month.OCTOBER, 30),
                                         "content1"))));
+
+ */
 
         return RESUME;
     }
