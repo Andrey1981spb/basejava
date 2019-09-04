@@ -1,8 +1,7 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.sql;
 
+import org.postgresql.util.PSQLException;
 import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
-import ru.javawebinar.basejava.sql.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +9,22 @@ import java.sql.SQLException;
 
 public class SQLHelper {
 
-    public <T> T doQuery(ConnectionFactory connectionFactory, String query, SQLProcessor<T> processor) {
+    private final ConnectionFactory connectionFactory;
+
+    public SQLHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
+    public <T> T doQuery(String query, SQLProcessor<T> processor) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             return processor.process(ps);
         } catch (SQLException e) {
-            throw new ExistStorageException(null);
+            if (e.getSQLState().equals("23505")) {
+                throw new ExistStorageException(null);
+            }
         }
+        return null;
     }
 
     public interface SQLProcessor<T> {
