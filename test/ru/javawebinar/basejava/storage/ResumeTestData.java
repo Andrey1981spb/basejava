@@ -17,6 +17,10 @@ public class ResumeTestData {
     public static Resume getResume(String uuid, String fullName) {
 
         RESUME = new Resume(uuid, fullName);
+
+        RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
+        RESUME.addContact(ContactType.TELEPHONE, "11111");
+        RESUME.addContact(ContactType.SKYPE, "skype2");
 /*
         RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
         RESUME.addContact(ContactType.TELEPHONE, "11111");

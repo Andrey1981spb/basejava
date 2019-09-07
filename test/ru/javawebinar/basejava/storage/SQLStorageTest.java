@@ -1,9 +1,11 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.util.Config;
+
 public class SQLStorageTest extends AbstractStorageTest {
 
     public SQLStorageTest() {
-        super(new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "andrej", "postgres"));
+        super(Config.get().getStorage());
     }
 
 }
