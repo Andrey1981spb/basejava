@@ -35,7 +35,7 @@ public class SqlStorage implements Storage {
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        resume = executeContact(resume, rs);
+                        executeContact(resume, rs);
                     } while (rs.next());
                     return resume;
                 });
@@ -52,12 +52,7 @@ public class SqlStorage implements Storage {
                         }
                         ps.execute();
                     }
-                    sqlHelper.doQuery("DELETE FROM contact WHERE resume_uuid=?",
-                            ps -> {
-                                ps.setString(1, resume.getUuid());
-                                ps.execute();
-                                return null;
-                            });
+                    deleteContact(conn, resume);
                     addContact(conn, resume);
                     return null;
                 }
@@ -97,19 +92,16 @@ public class SqlStorage implements Storage {
                 "        ON r.uuid = c.resume_uuid " +
                 "ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            Map<String, Resume> resumeMap = new HashMap<>();
+            Map<String, Resume> resumeMap = new LinkedHashMap<>();
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
                 Resume resume = resumeMap.get(uuid);
-                if (resume == null) {
-                    resume = new Resume(uuid, rs.getString("full_name"));
-                    resumeMap.put(uuid, resume);
-                }
+                String full_name = rs.getString("full_name");
+                resumeMap.computeIfAbsent(uuid, key -> resumeMap.put(key, new Resume(key, full_name)));
                 executeContact(resume, rs);
             }
             return new ArrayList<>(resumeMap.values());
         });
-
     }
 
     @Override
@@ -126,13 +118,12 @@ public class SqlStorage implements Storage {
                 });
     }
 
-    private Resume executeContact(Resume resume, ResultSet rs) throws SQLException {
+    private void executeContact(Resume resume, ResultSet rs) throws SQLException {
         String value = rs.getString("value");
         if (value != null) {
             ContactType type = ContactType.valueOf(rs.getString("type"));
             resume.addContact(type, value);
         }
-        return resume;
     }
 
     private void addContact(Connection conn, Resume resume) throws SQLException {
@@ -145,6 +136,14 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
         }
+    }
+
+    private void deleteContact(Connection conn, Resume r) {
+        sqlHelper.doQuery("DELETE  FROM contact WHERE resume_uuid=?", ps -> {
+            ps.setString(1, r.getUuid());
+            ps.execute();
+            return null;
+        });
     }
 
 }
