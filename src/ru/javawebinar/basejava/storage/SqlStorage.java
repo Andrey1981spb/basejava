@@ -63,7 +63,7 @@ public class SqlStorage implements Storage {
     public void save(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-                        ps.setString(1, resume.getUuid());
+                        ps.setString(1, resume.getUuid().trim());
                         ps.setString(2, resume.getFullName());
                         ps.execute();
                     }
@@ -87,10 +87,10 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         return sqlHelper.doQuery("" +
-                "    SELECT * FROM resume r " +
-                " LEFT JOIN contact c " +
-                "        ON r.uuid = c.resume_uuid " +
-                "ORDER BY full_name, uuid", ps -> {
+                "  SELECT * FROM resume r " +
+                "    LEFT JOIN contact c " +
+                "      ON r.uuid = c.resume_uuid " +
+                "        ORDER BY full_name, uuid ", ps -> {
             ResultSet rs = ps.executeQuery();
             Map<String, Resume> resumeMap = new LinkedHashMap<>();
             while (rs.next()) {
@@ -98,7 +98,7 @@ public class SqlStorage implements Storage {
                 Resume resume = resumeMap.get(uuid);
                 String full_name = rs.getString("full_name");
                 resumeMap.computeIfAbsent(uuid, key -> resumeMap.put(key, new Resume(key, full_name)));
-                executeContact(resume, rs);
+                executeContact(resumeMap.get(uuid), rs);
             }
             return new ArrayList<>(resumeMap.values());
         });
