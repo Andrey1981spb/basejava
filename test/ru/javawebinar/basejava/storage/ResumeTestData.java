@@ -21,15 +21,12 @@ public class ResumeTestData {
         RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
         RESUME.addContact(ContactType.TELEPHONE, "11111");
         RESUME.addContact(ContactType.SKYPE, "skype2");
-/*
-        RESUME.addContact(ContactType.MAIL, "mail1@ya.ru");
-        RESUME.addContact(ContactType.TELEPHONE, "11111");
-        RESUME.addContact(ContactType.SKYPE, "skype2");
-        RESUME.addContact(ContactType.TELEPHONE, "22222");
+
         RESUME.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
         RESUME.addSection(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
         RESUME.addSection(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
         RESUME.addSection(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
+ /*
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
