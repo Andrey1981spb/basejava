@@ -8,10 +8,14 @@ import java.sql.*;
 import java.util.*;
 
 public class SqlStorage implements Storage {
-    public final SQLHelper sqlHelper;
+    public SQLHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         sqlHelper = new SQLHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+    }
+
+    public SqlStorage() {
+
     }
 
     @Override
@@ -21,26 +25,32 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return sqlHelper.doQuery("" +
-                        "    SELECT * FROM resume r " +
-                        " LEFT JOIN contact c " +
-                        "        ON r.uuid = c.resume_uuid  " +
-                        " JOIN section s " +
-                        "        ON r.uuid = s.section_uuid  " +
-                        "     WHERE r.uuid =? ",
-                ps -> {
-                    ps.setString(1, uuid);
-                    ResultSet rs = ps.executeQuery();
-                    if (!rs.next()) {
-                        throw new NotExistStorageException(uuid);
-                    }
-                    Resume resume = new Resume(uuid, rs.getString("full_name"));
-                    do {
-                        executeContact(resume, rs);
-                        executeSection(resume, rs);
-                    } while (rs.next());
-                    return resume;
-                });
+        return sqlHelper.transactionalExecute(conn -> {
+            Resume resume;
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume WHERE uuid = ?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                if (!rs.next()) {
+                    throw new NotExistStorageException(uuid);
+                }
+                resume = new Resume(uuid, rs.getString("full_name"));
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    executeContact(resume, rs);
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section WHERE section_uuid = ?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    executeSection(resume, rs);
+                }
+            }
+            return resume;
+        });
     }
 
     @Override
@@ -134,11 +144,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return sqlHelper.doQuery("SELECT count(*) FROM resume r" +
-                        "  LEFT JOIN contact c " +
-                        "    ON r.uuid = c.resume_uuid " +
-                        " LEFT JOIN section s " +
-                        "    ON r.uuid = s.section_uuid  ",
+        return sqlHelper.doQuery("SELECT count(*) FROM resume",
                 statement -> {
                     ResultSet rs = statement.executeQuery();
                     if (rs.next()) {
@@ -167,7 +173,7 @@ public class SqlStorage implements Storage {
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    resume.addSection(type, new MarkedListSection("section_value"));
+                    resume.addSection(type, new MarkedListSection(Arrays.asList(value.split("\n"))));
             }
         }
     }
@@ -189,18 +195,17 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getResumeSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
+                String value = "";
                 switch (e.getKey()) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        ps.setString(3, ((SimpleTextSection) e.getValue()).getPosition());
+                        value = String.join("\n", ((SimpleTextSection) e.getValue()).getPosition());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        List<String> list = ((MarkedListSection) e.getValue()).getPerformanceList();
-                        for (String value : list) {
-                            ps.setString(3, value);
-                        }
+                        value = String.join("\n", ((MarkedListSection) e.getValue()).getPerformanceList());
                 }
+                ps.setString(3, value);
                 ps.addBatch();
             }
             ps.executeBatch();
