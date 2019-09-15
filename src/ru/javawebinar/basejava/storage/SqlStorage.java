@@ -15,7 +15,6 @@ public class SqlStorage implements Storage {
     }
 
     public SqlStorage() {
-
     }
 
     @Override
@@ -169,7 +168,7 @@ public class SqlStorage implements Storage {
             switch (type) {
                 case PERSONAL:
                 case OBJECTIVE:
-                    resume.addSection(type, new SimpleTextSection("section_value"));
+                    resume.addSection(type, new SimpleTextSection(rs.getString("section_value")));
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
