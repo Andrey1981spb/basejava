@@ -4,13 +4,20 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.util.Config;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 public class SqlTest {
+  //  private static final String UUID_1 = UUID.randomUUID().toString();
+  //  private static final String UUID_2 = UUID.randomUUID().toString();
+  //  private static final String UUID_3 = UUID.randomUUID().toString();
+  //  private static final String UUID_4 = UUID.randomUUID().toString();
+
     private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
+    private static final String UUID_2 = "uuid2";
+    private static final String UUID_3 = "uuid3";
+    private static final String UUID_4 = "uuid4";
+
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
@@ -25,14 +32,25 @@ public class SqlTest {
     }
 
     public static void main(String[] args) {
-        File PROPS = new File("config/resumes.properties");
+        File PROPS = new File( "config/resumes.properties");
         System.out.println(PROPS.getAbsolutePath());
+
         sqlStorage.save(RESUME_1);
-        Resume resume = sqlStorage.get(UUID_1);
-        System.out.println(resume.getUuid());
-        System.out.println(resume.toString());
-        System.out.println(resume.getContactInfoMap().toString());
-        System.out.println(resume.getResumeSections().toString());
+        sqlStorage.save(RESUME_2);
+        sqlStorage.save(RESUME_3);
+        sqlStorage.save(RESUME_4);
+     //    Resume resume = sqlStorage.get(UUID_1);
+     //   System.out.println(resume.getUuid());
+      //  System.out.println(resume.toString());
+      //  System.out.println(resume.getContactInfoMap().toString());
+      //  System.out.println(resume.getResumeSections().toString());
+        List<Resume> list= sqlStorage.getAllSorted();
+        for (Resume resume : list){
+            System.out.println(resume.getUuid());
+            System.out.println(resume.toString());
+            System.out.println(resume.getContactInfoMap().toString());
+            System.out.println(resume.getResumeSections().toString());
+        }
     }
 
 }

@@ -1,12 +1,9 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
 import ru.javawebinar.basejava.util.Config;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -14,14 +11,13 @@ import java.util.List;
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-      //  response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        //  response.setHeader("Content-Type", "text/html; charset=UTF-8");
 
         String name = request.getParameter("name");
         Writer writer = response.getWriter();

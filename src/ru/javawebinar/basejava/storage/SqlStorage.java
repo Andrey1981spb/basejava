@@ -14,9 +14,6 @@ public class SqlStorage implements Storage {
         sqlHelper = new SQLHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
-    public SqlStorage() {
-    }
-
     @Override
     public void clear() {
         sqlHelper.doQuery("DELETE FROM resume");
@@ -113,23 +110,18 @@ public class SqlStorage implements Storage {
             }
 
             try (PreparedStatement ps2 = conn.prepareStatement("   " +
-                    " SELECT * FROM contact " +
-                    "   ORDER BY resume_uuid")) {
+                    " SELECT * FROM contact ")) {
                 ResultSet rsContact = ps2.executeQuery();
-
                 while (rsContact.next()) {
                     String uuid = rsContact.getString("resume_uuid");
                     Resume resume = resumeMap.get(uuid);
                     executeContact(resume, rsContact);
                 }
-
             }
 
             try (PreparedStatement ps3 = conn.prepareStatement("   " +
-                    " SELECT * FROM section " +
-                    "   ORDER BY section_uuid")) {
+                    " SELECT * FROM section ")) {
                 ResultSet rsSection = ps3.executeQuery();
-
                 while (rsSection.next()) {
                     String uuid = rsSection.getString("section_uuid");
                     Resume resume = resumeMap.get(uuid);
