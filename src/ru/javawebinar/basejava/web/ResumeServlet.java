@@ -13,22 +13,22 @@ import java.util.List;
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
     private Storage sqlStorage;
+
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
         sqlStorage = Config.get().getStorage();
     }
 
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
     }
 
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         //  response.setHeader("Content-Type", "text/html; charset=UTF-8");
 
-        String name = request.getParameter("name");
         Writer writer = response.getWriter();
         writer.write(
                 "<html>\n" +
@@ -37,11 +37,11 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                         "    <link rel=\"stylesheet\" href=\"css/style.css\">\n" +
                         "</head>\n" +
                         "<body>\n");
+        String name = request.getParameter("name");
 
-        if (!name.isEmpty()) {
+        if (name != null) {
             String content = sqlStorage.get(name).toString();
             writer.write(content);
-
         } else {
             writer.write("<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\">\n");
             List<Resume> list = sqlStorage.getAllSorted();
