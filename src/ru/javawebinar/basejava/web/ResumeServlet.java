@@ -4,11 +4,20 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 import ru.javawebinar.basejava.util.Config;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
+
+    private Storage sqlStorage;
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+        sqlStorage = Config.get().getStorage();
+    }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
     }
@@ -30,12 +39,10 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                         "<body>\n");
 
         if (!name.isEmpty()) {
-            Storage storage = Config.get().getStorage();
-            String content = storage.get(name).toString();
+            String content = sqlStorage.get(name).toString();
             writer.write(content);
 
         } else {
-            Storage sqlStorage = Config.get().getStorage();
             writer.write("<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\">\n");
             List<Resume> list = sqlStorage.getAllSorted();
             for (Resume resume : list) {

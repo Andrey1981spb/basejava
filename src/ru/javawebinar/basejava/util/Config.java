@@ -11,6 +11,7 @@ import java.util.Properties;
 
 public class Config {
     private static final File PROPS = new File( "/Users/andrej/basejava/config/resumes.properties");
+   // private static final File PROPS = new File( System.getProperty("homeDir") + "config/resumes.properties");
     private static final Config INSTANCE = new Config();
 
     private Properties props = new Properties();
@@ -24,12 +25,6 @@ public class Config {
             storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
-        }
-
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException(e);
         }
 
     }
