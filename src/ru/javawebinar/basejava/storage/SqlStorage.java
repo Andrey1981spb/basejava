@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SQLHelper;
+import ru.javawebinar.basejava.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -162,15 +163,7 @@ public class SqlStorage implements Storage {
         String value = rs.getString("section_value");
         if (value != null) {
             SectionType type = SectionType.valueOf(rs.getString("section_type"));
-            switch (type) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    resume.addSection(type, new SimpleTextSection(rs.getString("section_value")));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    resume.addSection(type, new MarkedListSection(Arrays.asList(value.split("\n"))));
-            }
+            resume.addSection(type, JsonParser.read(value, AbstractSection.class));
         }
     }
 
@@ -191,17 +184,8 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getResumeSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                String value = "";
-                switch (e.getKey()) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        value = String.join("\n", ((SimpleTextSection) e.getValue()).getPosition());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        value = String.join("\n", ((MarkedListSection) e.getValue()).getPerformanceList());
-                }
-                ps.setString(3, value);
+                AbstractSection section = e.getValue();
+                ps.setString(3, JsonParser.write(section, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();

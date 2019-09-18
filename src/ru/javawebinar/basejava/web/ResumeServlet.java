@@ -4,60 +4,67 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 import ru.javawebinar.basejava.util.Config;
 
+import ru.javawebinar.basejava.model.ContactType;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
 
-public class ResumeServlet extends javax.servlet.http.HttpServlet {
+public class ResumeServlet extends HttpServlet {
 
-    private Storage sqlStorage;
+    private Storage storage; // = Config.get().getStorage();
 
     @Override
-    public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
-        sqlStorage = Config.get().getStorage();
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.get().getStorage();
     }
 
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
-    }
-
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        //  response.setHeader("Content-Type", "text/html; charset=UTF-8");
-
-        Writer writer = response.getWriter();
-        writer.write(
-                "<html>\n" +
-                        "<head>\n" +
-                        "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
-                        "    <link rel=\"stylesheet\" href=\"css/style.css\">\n" +
-                        "</head>\n" +
-                        "<body>\n");
-        String name = request.getParameter("name");
-
-        if (name != null) {
-            String content = sqlStorage.get(name).toString();
-            writer.write(content);
-        } else {
-            writer.write("<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\">\n");
-            List<Resume> list = sqlStorage.getAllSorted();
-            for (Resume resume : list) {
-                writer.write("<tr>" +
-                        "<td >" + resume.getFullName() + "</td >" +
-                        "<td >" + resume.getContactInfoMap().toString() + "</td >" +
-                        "<td >" + resume.getResumeSections().toString() + "</td >" +
-                        "</tr>"
-                );
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume r = storage.get(uuid);
+        r.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                r.addContact(type, value);
+            } else {
+                r.getContactInfoMap().remove(type);
             }
-            writer.write("</table>\n");
         }
+        storage.update(r);
+        response.sendRedirect("resume");
+    }
 
-        writer.write(
-                "</body>\n" +
-                        "</html>\n");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        }
+        Resume r;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                r = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", r);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 }
