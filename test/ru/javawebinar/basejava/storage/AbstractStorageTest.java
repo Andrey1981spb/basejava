@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.javawebinar.basejava.util.Config;
+import ru.javawebinar.basejava.Config;
 
 import java.io.File;
 import java.util.*;

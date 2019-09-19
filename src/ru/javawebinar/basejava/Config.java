@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.util;
+package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
@@ -10,8 +10,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
+    // private static final File PROPS = new File( System.getProperty("homeDir") + "config/resumes.properties");
     private static final File PROPS = new File( "/Users/andrej/basejava/config/resumes.properties");
-   // private static final File PROPS = new File( System.getProperty("homeDir") + "config/resumes.properties");
     private static final Config INSTANCE = new Config();
 
     private Properties props = new Properties();

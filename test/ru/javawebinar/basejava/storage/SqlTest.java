@@ -1,11 +1,10 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.util.Config;
+import ru.javawebinar.basejava.Config;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 public class SqlTest {
   //  private static final String UUID_1 = UUID.randomUUID().toString();

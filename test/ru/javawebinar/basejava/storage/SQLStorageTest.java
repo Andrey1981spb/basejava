@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.util.Config;
+import ru.javawebinar.basejava.Config;
 
 public class SQLStorageTest extends AbstractStorageTest {
 

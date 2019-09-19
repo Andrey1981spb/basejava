@@ -1,10 +1,8 @@
 package ru.javawebinar.basejava.web;
 
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
-import ru.javawebinar.basejava.util.Config;
-
-import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.Config;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -37,6 +35,25 @@ public class ResumeServlet extends HttpServlet {
                 r.getContactInfoMap().remove(type);
             }
         }
+
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                r.getSections().remove(type);
+            } else {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        r.addSection(type, new SimpleTextSection(value));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        r.addSection(type, new MarkedListSection(value));
+                        break;
+                }
+            }
+        }
+
         storage.update(r);
         response.sendRedirect("resume");
     }
@@ -49,7 +66,7 @@ public class ResumeServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
-        Resume r;
+        Resume resume;
         switch (action) {
             case "delete":
                 storage.delete(uuid);
@@ -57,12 +74,12 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
             case "edit":
-                r = storage.get(uuid);
+                resume = storage.get(uuid);
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }
-        request.setAttribute("resume", r);
+        request.setAttribute("resume", resume);
         request.getRequestDispatcher(
                 ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
         ).forward(request, response);

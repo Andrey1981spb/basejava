@@ -1,4 +1,6 @@
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
+<%@ page import="ru.javawebinar.basejava.model.SectionType" %>
+<%@ page import="ru.javawebinar.basejava.model.MarkedListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -25,9 +27,33 @@
             </dl>
         </c:forEach>
         <h3>Секции:</h3>
-        <input type="text" name="section" size=30 value="1"><br/>
-        <input type="text" name="section" size=30 value="2"><br/>
-        <input type="text" name="section" size=30 value="3"><br/>
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <c:set var="section" value="${resume.getSection(type)}"/>
+            <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
+            <c:choose>
+                <c:when test="${type==QUALIFICATIONS}">
+                    <input type="text" name="${type}" size=30 value="<%=section%>"><br/>
+                </c:when>
+
+                <c:when test="${type==PERSONAL}">
+                    <input type="text" name="${type}" size=60 value="<%=section%>"><br/>
+                </c:when>
+
+                <c:when test="${type==ACHIEVEMENT}">
+                <input type="text" name="${type}" size=60 value="<%=((MarkedListSection)section).getPerformanceList()%>"><br/>
+               </c:when>
+
+                <c:when test="${type==QUALIFICATIONS}">
+                    <input type="text" name="${type}" size=60
+                           value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>"><br/>
+                </c:when>
+
+            </c:choose>
+        </c:forEach>
+
+
+
+
         <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
