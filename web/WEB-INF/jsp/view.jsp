@@ -28,36 +28,25 @@
                 <c:set var="key" value="${sectionEntry.key}"/>
                 <c:set var="section" value="${sectionEntry.value}"/>
                 <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
-        <c:choose>
+          <c:choose>
 
-            <c:when test="${key==OBJECTIVE}">
-                <%=((SimpleTextSection)sectionEntry).getPosition()%>
+            <c:when test="${key=='OBJECTIVE'|| key=='PERSONAL'}">
+                <%=((SimpleTextSection)section).getPosition()%>
             </c:when>
 
-            <c:when test="${key==PERSONAL}">
-                    <%=((SimpleTextSection)sectionEntry).getPosition()%>
-            </c:when>
-
-            <c:when test="${key==ACHIEVEMENT}">
-                <c:set var="list" value="<%=((MarkedListSection)sectionEntry).getPerformanceList()%>"/>
-            <c:forEach var="value" items="list">
+            <c:when test="${key=='QUALIFICATIONS'|| key=='ACHIEVEMENT'}">
+                <c:set var="list" value="<%=((MarkedListSection)section).getPerformanceList()%>"/>
+            <c:forEach var="value" items="${list}">
                 <c:out value="${value}"/>
             </c:forEach>
             </c:when>
 
-            <c:when test="${key==QUALIFICATIONS}">
-                <c:set var="list" value="<%=((MarkedListSection)sectionEntry).getPerformanceList()%>"/>
-            <c:forEach var="value" items="list">
-                <c:out value="${value}"/>
-            </c:forEach>
-            </c:when>
-
-            <c:when test="${key==EXPERIENCE}">
-                <c:set var="organisationList" value="<%=((OrganizationSection)sectionEntry).getWorkStudyStringDates()%>"/>
+            <c:when test="${key=='EXPERIENCE'|| key=='EDUCATION'}">
+                <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
                 <jsp:useBean id="organisation" type="ru.javawebinar.basejava.model.Organization"/>
-            <c:forEach var="organisation" items="organisationList">
-                <c:out value="<%=organisation.getHomePage().getName()%>"/>
-                <c:out value="<%=organisation.getHomePage().getUrl()%>"/>
+            <c:forEach var="organisation" items="${organisationList}">
+                <c:out value="${organisation.homePage.name}"/>
+                <c:out value="${organisation.homePage.url}"/>
 
                 <c:forEach var="position" items="<%=organisation.getPositionList()%>">
                    <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>

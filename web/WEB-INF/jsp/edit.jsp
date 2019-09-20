@@ -31,21 +31,30 @@
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
             <c:choose>
-                <c:when test="${type==QUALIFICATIONS}">
-                    <input type="text" name="${type}" size=30 value="<%=section%>"><br/>
+                <c:when test="${type=='OBJECTIVE'}">
+                    <label>
+                        <input type="text" name="${type}" size=30 value="<%=section%>">
+                    </label><br/>
                 </c:when>
 
-                <c:when test="${type==PERSONAL}">
-                    <input type="text" name="${type}" size=60 value="<%=section%>"><br/>
+                <c:when test="${type=='PERSONAL'}">
+                    <label>
+                        <input type="text" name="${type}" size=60 value="<%=section%>">
+                    </label><br/>
                 </c:when>
 
-                <c:when test="${type==ACHIEVEMENT}">
-                <input type="text" name="${type}" size=60 value="<%=((MarkedListSection)section).getPerformanceList()%>"><br/>
-               </c:when>
+                <c:when test="${type=='ACHIEVEMENT'}">
+                    <label>
+                        <input type="text" name="${type}" size=60
+                               value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>">
+                    </label><br/>
+                </c:when>
 
-                <c:when test="${type==QUALIFICATIONS}">
-                    <input type="text" name="${type}" size=60
-                           value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>"><br/>
+                <c:when test="${type=='QUALIFICATIONS'}">
+                    <label>
+                        <input type="text" name="${type}" size=60
+                               value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>">
+                    </label><br/>
                 </c:when>
 
             </c:choose>
