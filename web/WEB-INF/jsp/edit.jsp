@@ -31,14 +31,9 @@
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
             <c:choose>
-                <c:when test="${type=='OBJECTIVE'}">
+                <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
                     <dt>${type.title}</dt>
-                        <textarea name='${type}' cols=25 rows=3><%=section%></textarea>
-                </c:when>
-
-                <c:when test="${type=='PERSONAL'}">
-                    <dt>${type.title}</dt>
-                        <textarea name='${type}' cols=96 rows=7><%=section%></textarea>
+                        <textarea name='${type}' cols=35 rows=5><%=section%></textarea>
                 </c:when>
 
                 <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">

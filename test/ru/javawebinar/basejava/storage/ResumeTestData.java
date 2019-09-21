@@ -24,9 +24,8 @@ public class ResumeTestData {
 
         RESUME.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
         RESUME.addSection(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
-        RESUME.addSection(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
+        RESUME.addSection(SectionType.ACHIEVEMENT, new MarkedListSection("Achievement11", "Achievement12"));
         RESUME.addSection(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
-
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
@@ -34,7 +33,7 @@ public class ResumeTestData {
                                         LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проета"),
                                 new Organization.Position("Position1",
                                         LocalDate.of(2011, Month.OCTOBER, 30),
-                                        LocalDate.of(2013, Month.OCTOBER, 30), "Автор проета")
+                                        LocalDate.of(2013, Month.OCTOBER, 30), "Разработчик")
                         )));
 
         RESUME.addSection(SectionType.EDUCATION,
@@ -43,18 +42,10 @@ public class ResumeTestData {
                                 new Organization.Position("aspirant", LocalDate.of(1996, Month.OCTOBER, 30),
                                         LocalDate.of(2000, Month.OCTOBER, 30),
                                         "aspirant"),
-                                new Organization.Position("student", LocalDate.of(1996, Month.OCTOBER, 30),
-                                        LocalDate.of(2000, Month.OCTOBER, 30),
-                                        "aspirant"))
+                                new Organization.Position("student", LocalDate.of(1993, Month.OCTOBER, 30),
+                                        LocalDate.of(1996, Month.NOVEMBER, 30),
+                                        "student"))
                 ));
-        RESUME.addSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Organization2", "http://Organization2.ru",
-                                new Organization.Position("Position", LocalDate.of(2008, Month.OCTOBER, 30),
-                                        LocalDate.of(2011, Month.OCTOBER, 30),
-                                        "content1"))));
-
-
 
         return RESUME;
     }

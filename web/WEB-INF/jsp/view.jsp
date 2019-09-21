@@ -30,33 +30,35 @@
                 <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
           <c:choose>
 
-            <c:when test="${key=='OBJECTIVE'|| key=='PERSONAL'}">
+            <c:when test="${key=='OBJECTIVE'||key=='PERSONAL'}">
             <a name="key.name">${key.title}</a>
-                <%=((SimpleTextSection)section).getPosition()%>
+                <%=((SimpleTextSection)section).getPosition()%><br>
             </c:when>
 
             <c:when test="${key=='QUALIFICATIONS'|| key=='ACHIEVEMENT'}">
-            <a name="key.name">${key.title}</a>
+            <a name="key.name">${key.title}</a><br>
                 <c:set var="list" value="<%=((MarkedListSection)section).getPerformanceList()%>"/>
             <c:forEach var="value" items="${list}">
-                <c:out value="${value}"/>
+                <c:out value="${value}"/><br>
             </c:forEach>
             </c:when>
 
             <c:when test="${key=='EXPERIENCE'|| key=='EDUCATION'}">
-            <a name="key.name">${key.title}</a>
+            <a name="key.name">${key.title}</a><br>
                 <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
 
             <c:forEach var="organisation" items="${organisationList}">
-                <c:out value="${organisation.homePage.name}"/>
-                <c:out value="${organisation.homePage.url}"/>
+                <c:out value="${organisation.homePage.name}"/><br>
+                <c:out value="${organisation.homePage.url}"/><br>
 
                 <c:forEach var="position" items="${organisation.positionList}">
                    <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
-                      <c:out value="<%=position.getTitle()%>"/>
-                      <c:out value="<%=position.getDateOfEntry()%>"/>
-                      <c:out value="<%=position.getDateOfExit()%>"/>
-                      <c:out value="<%=position.getDescription()%>"/>
+                      <c:out value="<%=position.getTitle()%>"/><br>
+                      'Дата поступления'<br>
+                      <c:out value="<%=position.getDateOfEntry()%>"/><br>
+                      'Дата окончания'<br>
+                      <c:out value="<%=position.getDateOfExit()%>"/><br>
+                      <c:out value="<%=position.getDescription()%>"/><br>
 
                </c:forEach>
             </c:forEach>
