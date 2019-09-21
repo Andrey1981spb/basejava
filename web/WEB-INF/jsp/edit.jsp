@@ -32,29 +32,19 @@
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
             <c:choose>
                 <c:when test="${type=='OBJECTIVE'}">
-                    <label>
-                        <input type="text" name="${type}" size=30 value="<%=section%>">
-                    </label><br/>
+                    <dt>${type.title}</dt>
+                        <textarea name='${type}' cols=25 rows=3><%=section%></textarea>
                 </c:when>
 
                 <c:when test="${type=='PERSONAL'}">
-                    <label>
-                        <input type="text" name="${type}" size=60 value="<%=section%>">
-                    </label><br/>
+                    <dt>${type.title}</dt>
+                        <textarea name='${type}' cols=96 rows=7><%=section%></textarea>
                 </c:when>
 
-                <c:when test="${type=='ACHIEVEMENT'}">
-                    <label>
-                        <input type="text" name="${type}" size=60
-                               value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>">
-                    </label><br/>
-                </c:when>
-
-                <c:when test="${type=='QUALIFICATIONS'}">
-                    <label>
-                        <input type="text" name="${type}" size=60
-                               value="<%=String.join("\n", ((MarkedListSection)section).getPerformanceList())%>">
-                    </label><br/>
+                <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                    <dt>${type.title}</dt>
+                        <textarea name='${type}' cols=115
+                                  rows=9><%=String.join("\n", ((MarkedListSection) section).getPerformanceList())%></textarea>
                 </c:when>
 
             </c:choose>

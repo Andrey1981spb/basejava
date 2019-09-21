@@ -26,7 +26,7 @@ public class ResumeTestData {
         RESUME.addSection(SectionType.PERSONAL, new SimpleTextSection("Personal data"));
         RESUME.addSection(SectionType.ACHIEVEMENT, new MarkedListSection("Achivment11", "Achivment12"));
         RESUME.addSection(SectionType.QUALIFICATIONS, new MarkedListSection("Java", "SQL"));
- /*
+
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
@@ -54,7 +54,7 @@ public class ResumeTestData {
                                         LocalDate.of(2011, Month.OCTOBER, 30),
                                         "content1"))));
 
- */
+
 
         return RESUME;
     }

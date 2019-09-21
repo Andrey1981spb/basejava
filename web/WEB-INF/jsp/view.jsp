@@ -31,10 +31,12 @@
           <c:choose>
 
             <c:when test="${key=='OBJECTIVE'|| key=='PERSONAL'}">
+            <a name="key.name">${key.title}</a>
                 <%=((SimpleTextSection)section).getPosition()%>
             </c:when>
 
             <c:when test="${key=='QUALIFICATIONS'|| key=='ACHIEVEMENT'}">
+            <a name="key.name">${key.title}</a>
                 <c:set var="list" value="<%=((MarkedListSection)section).getPerformanceList()%>"/>
             <c:forEach var="value" items="${list}">
                 <c:out value="${value}"/>
@@ -42,13 +44,14 @@
             </c:when>
 
             <c:when test="${key=='EXPERIENCE'|| key=='EDUCATION'}">
+            <a name="key.name">${key.title}</a>
                 <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
-                <jsp:useBean id="organisation" type="ru.javawebinar.basejava.model.Organization"/>
+
             <c:forEach var="organisation" items="${organisationList}">
                 <c:out value="${organisation.homePage.name}"/>
                 <c:out value="${organisation.homePage.url}"/>
 
-                <c:forEach var="position" items="<%=organisation.getPositionList()%>">
+                <c:forEach var="position" items="${organisation.positionList}">
                    <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
                       <c:out value="<%=position.getTitle()%>"/>
                       <c:out value="<%=position.getDateOfEntry()%>"/>
