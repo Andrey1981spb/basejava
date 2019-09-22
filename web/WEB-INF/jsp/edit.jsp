@@ -1,6 +1,7 @@
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page import="ru.javawebinar.basejava.model.MarkedListSection" %>
+<%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -40,6 +41,30 @@
                     <dt>${type.title}</dt>
                         <textarea name='${type}' cols=115
                                   rows=9><%=String.join("\n", ((MarkedListSection) section).getPerformanceList())%></textarea>
+                </c:when>
+
+                <c:when test="${type=='EXPERIENCE'|| type=='EDUCATION'}">
+                    <dt>${type.title}</dt><br><br>
+                    <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
+                    <c:forEach var="organisation" items="${organisationList}">
+                      <textarea name='${type}' cols=40 rows=1>${organisation.homePage.name}</textarea><br>
+                        <textarea name='${type}' cols=40 rows=1>${organisation.homePage.url}</textarea><br>
+
+                        <c:forEach var="position" items="${organisation.positionList}">
+                            <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                            <textarea name='${type}' cols=40 rows=1>${position.title}</textarea><br>
+                            'Дата поступления'<br>
+                            <textarea name='${type}' cols=40 rows=1>${position.dateOfEntry}</textarea><br>
+                            'Дата окончания'<br>
+                            <textarea name='${type}' cols=40 rows=1>${position.dateOfExit}</textarea><br>
+                            <textarea name='${type}' cols=40 rows=8>${position.description}</textarea><br><br>
+                        </c:forEach>
+
+
+                    </c:forEach>
+
+
+
                 </c:when>
 
             </c:choose>

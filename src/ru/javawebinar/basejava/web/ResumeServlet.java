@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -25,36 +30,51 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
+                resume.addContact(type, value);
             } else {
-                r.getContactInfoMap().remove(type);
+                resume.getContactInfoMap().remove(type);
             }
         }
 
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null || value.trim().length() !=0) {
-                r.getSections().remove(type);
+            String[] values = request.getParameterValues(type.name());
+            if (value != null || value.trim().length() != 0) {
+                resume.getSections().remove(type);
             } else {
                 switch (type) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        r.addSection(type, new SimpleTextSection(value));
+                        resume.addSection(type, new SimpleTextSection(value));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.addSection(type, new MarkedListSection(value));
+                        resume.addSection(type, new MarkedListSection(value));
                         break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> organizations = new ArrayList<>();
+                        for (int i = 0; i < value.length(); i++) {
+                            List<Organization.Position> positions = new ArrayList<>();
+                            for (Organization organization : new OrganizationSection().getWorkStudyStringDates()) {
+                                organization.getHomePage().setUrl(value);
+                                organization.getHomePage().setName(value);
+                                positions.add(new Organization.Position(value, LocalDate.parse(value, DateTimeFormatter.ofPattern("MM/yyyy")),
+                                        LocalDate.parse(value, DateTimeFormatter.ofPattern("MM/yyyy")), value));
+                            }
+                            organizations.add(new Organization(new Link (value, value),positions));
+                        }
+                        resume.addSection(type,new OrganizationSection(organizations));
                 }
             }
         }
 
-        storage.update(r);
+        storage.update(resume);
         response.sendRedirect("resume");
     }
 
