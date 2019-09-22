@@ -59,15 +59,16 @@ public class ResumeServlet extends HttpServlet {
                     case EXPERIENCE:
                     case EDUCATION:
                         List<Organization> organizations = new ArrayList<>();
-                        for (int i = 0; i < value.length(); i++) {
+                        for (int i = 0; i < values.length; i++) {
                             List<Organization.Position> positions = new ArrayList<>();
+                            Link link = new Link (values[i], values[i]);
                             for (Organization organization : new OrganizationSection().getWorkStudyStringDates()) {
                                 organization.getHomePage().setUrl(value);
                                 organization.getHomePage().setName(value);
-                                positions.add(new Organization.Position(value, LocalDate.parse(value, DateTimeFormatter.ofPattern("MM/yyyy")),
-                                        LocalDate.parse(value, DateTimeFormatter.ofPattern("MM/yyyy")), value));
+                                positions.add(new Organization.Position(value, LocalDate.parse(values[i], DateTimeFormatter.ofPattern("MM/yyyy")),
+                                        LocalDate.parse(values[i], DateTimeFormatter.ofPattern("MM/yyyy")), values[i]));
                             }
-                            organizations.add(new Organization(new Link (value, value),positions));
+                            organizations.add(new Organization(link,positions));
                         }
                         resume.addSection(type,new OrganizationSection(organizations));
                 }
