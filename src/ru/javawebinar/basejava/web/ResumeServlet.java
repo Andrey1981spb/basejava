@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Position;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -44,7 +45,7 @@ public class ResumeServlet extends HttpServlet {
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
-            if (value != null || value.trim().length() != 0) {
+            if (value != null || value.trim().length() != 0 && values.length < 2) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
@@ -61,13 +62,21 @@ public class ResumeServlet extends HttpServlet {
                         List<Organization> organizations = new ArrayList<>();
                         for (int i = 0; i < values.length; i++) {
                             List<Organization.Position> positions = new ArrayList<>();
-                            Link link = new Link (values[i], values[i]);
-                            for (Organization organization : new OrganizationSection().getWorkStudyStringDates()) {
-                                organization.getHomePage().setUrl(value);
-                                organization.getHomePage().setName(value);
-                                positions.add(new Organization.Position(value, LocalDate.parse(values[i], DateTimeFormatter.ofPattern("MM/yyyy")),
-                                        LocalDate.parse(values[i], DateTimeFormatter.ofPattern("MM/yyyy")), values[i]));
-                            }
+                            String[] url = request.getParameterValues(type.name() + "url");
+                            String[] name = request.getParameterValues(type.name() + "name");
+                            Link link = new Link (url[i], name[i]);
+                                String typename = type.name() + i;
+                                String[] title = request.getParameterValues(typename + "title");
+                                String[] dateOfEntry = request.getParameterValues(typename + "dateOfEntry");
+                                String[] dateOfExit = request.getParameterValues(typename + "dateOfExit");
+                                String[] description = request.getParameterValues(typename + "description");
+
+                                for (int j = 0; j < title.length; j++) {
+                                    positions.add(new Organization.Position(title[j], LocalDate.parse(dateOfEntry[j],
+                                            DateTimeFormatter.ofPattern("MM/yyyy")),
+                                            LocalDate.parse(dateOfExit[j], DateTimeFormatter.ofPattern("MM/yyyy")),
+                                            description[j]));
+                                }
                             organizations.add(new Organization(link,positions));
                         }
                         resume.addSection(type,new OrganizationSection(organizations));
@@ -96,6 +105,20 @@ public class ResumeServlet extends HttpServlet {
             case "view":
             case "edit":
                 resume = storage.get(uuid);
+                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
+                    OrganizationSection organizationSection = (OrganizationSection) resume.getSection(type);
+                    List<Organization> organizations = new ArrayList<>();
+                    organizations.add(new Organization("", "", Organization.Position.POSITION));
+                    if (organizationSection != null) {
+                        for (Organization organization : organizationSection.getWorkStudyStringDates()) {
+                            List<Organization.Position> positions = new ArrayList<>();
+                            positions.add(Organization.Position.POSITION);
+                            positions.addAll(organization.getPositionList());
+                            organizations.add(new Organization(organization.getHomePage(), positions));
+                        }
+                    }
+                    resume.addSection(type, new OrganizationSection(organizations));
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");

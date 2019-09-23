@@ -46,18 +46,18 @@
                 <c:when test="${type=='EXPERIENCE'|| type=='EDUCATION'}">
                     <dt>${type.title}</dt><br><br>
                     <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
-                    <c:forEach var="organisation" items="${organisationList}">
-                      <textarea name='${type}' cols=40 rows=1>${organisation.homePage.name}</textarea><br>
-                        <textarea name='${type}' cols=40 rows=1>${organisation.homePage.url}</textarea><br>
+                    <c:forEach var="organisation" items="${organisationList}" varStatus="count">
+                      <textarea name='${type}name' cols=40 rows=1>${organisation.homePage.name}</textarea><br>
+                        <textarea name='${type}url' cols=40 rows=1>${organisation.homePage.url}</textarea><br>
 
                         <c:forEach var="position" items="${organisation.positionList}">
                             <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
-                            <textarea name='${type}' cols=40 rows=1>${position.title}</textarea><br>
+                            <textarea name='${type}${count.index}title' cols=40 rows=1>${position.title}</textarea><br>
                             'Дата поступления'<br>
-                            <textarea name='${type}' cols=40 rows=1>${position.dateOfEntry}</textarea><br>
+                            <textarea name='${type}${count.index}dateOfEntry' cols=40 rows=1>${position.dateOfEntry}</textarea><br>
                             'Дата окончания'<br>
-                            <textarea name='${type}' cols=40 rows=1>${position.dateOfExit}</textarea><br>
-                            <textarea name='${type}' cols=40 rows=8>${position.description}</textarea><br><br>
+                            <textarea name='${type}${count.index}dateOfExit' cols=40 rows=1>${position.dateOfExit}</textarea><br>
+                            <textarea name='${type}${count.index}description' cols=40 rows=8>${position.description}</textarea><br><br>
                         </c:forEach>
 
 

@@ -65,6 +65,7 @@ public class Organization implements Serializable {
     @XmlAccessorType ( XmlAccessType.FIELD )
     public static class Position implements Serializable {
 
+        public static final Position POSITION = new Position();
         String title;
         @XmlJavaTypeAdapter ( LocalDateAdapter.class )
         LocalDate dateOfEntry;
