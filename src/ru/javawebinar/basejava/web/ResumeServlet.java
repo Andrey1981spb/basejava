@@ -35,7 +35,7 @@ public class ResumeServlet extends HttpServlet {
         resume.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
+            if (value == null && value.trim().length() == 0) {
                 resume.addContact(type, value);
             } else {
                 resume.getContactInfoMap().remove(type);
