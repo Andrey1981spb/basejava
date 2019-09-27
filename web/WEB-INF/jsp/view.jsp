@@ -54,9 +54,7 @@
                 <c:forEach var="position" items="${organisation.positionList}">
                    <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
                       <c:out value="<%=position.getTitle()%>"/><br>
-                      'Дата поступления'<br>
                       <c:out value="<%=position.getDateOfEntry()%>"/><br>
-                      'Дата окончания'<br>
                       <c:out value="<%=position.getDateOfExit()%>"/><br>
                       <c:out value="<%=position.getDescription()%>"/><br>
 

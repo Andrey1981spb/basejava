@@ -7,14 +7,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
+import static ru.javawebinar.basejava.util.DateUtil.of;
+
 @XmlAccessorType ( XmlAccessType.FIELD )
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Organization EMPTY = new Organization("", "", Position.POSITION);
 
     private Link homePage;
     private List<Position> positionList = new ArrayList<>();
@@ -76,6 +82,14 @@ public class Organization implements Serializable {
         public Position() {
         }
 
+        public Position(int startYear, Month startMonth, String title, String description) {
+            this(title, of(startYear, startMonth), NOW,  description);
+        }
+
+        public Position(String title, int startYear, Month startMonth, int endYear, Month endMonth, String description) {
+            this(title, of(startYear, startMonth), of(endYear, endMonth),  description);
+        }
+
         public Position(String title, LocalDate dateOfEntry, LocalDate dateOfExit, String description) {
             Objects.requireNonNull(dateOfEntry, "dateOfEntry must not be null");
             Objects.requireNonNull(title, "title must not be null");
@@ -121,11 +135,11 @@ public class Organization implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Position that = (Position) o;
-            return title.equals(title) &&
-                    dateOfEntry.equals(dateOfEntry) &&
-                    dateOfExit != null ? dateOfExit.equals(dateOfExit) : dateOfExit == null &&
-                    description != null ? description.equals(description) : description == null;
+            Position position = (Position) o;
+            return Objects.equals(dateOfExit, position.dateOfExit) &&
+                    Objects.equals(dateOfEntry, position.dateOfEntry) &&
+                    Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description);
         }
 
         public int hashCode() {

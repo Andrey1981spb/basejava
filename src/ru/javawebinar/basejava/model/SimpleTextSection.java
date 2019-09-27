@@ -6,6 +6,8 @@ public class SimpleTextSection extends AbstractSection {
 
     private static final long serialVersionUID = 1L;
 
+    public static final SimpleTextSection EMPTY = new SimpleTextSection("");
+
     private String position;
 
     public SimpleTextSection() {

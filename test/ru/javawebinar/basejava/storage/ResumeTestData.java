@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
+
 public class ResumeTestData {
     private static Resume RESUME;
 
@@ -29,21 +31,16 @@ public class ResumeTestData {
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
-                                new Organization.Position("Position2",
-                                        LocalDate.of(2013, Month.OCTOBER, 30), null, "Автор проета"),
-                                new Organization.Position("Position1",
-                                        LocalDate.of(2011, Month.OCTOBER, 30),
-                                        LocalDate.of(2013, Month.OCTOBER, 30), "Разработчик")
+                                new Organization.Position("Position2",2013, Month.OCTOBER,2019, Month.OCTOBER, "Автор проета"),
+                                new Organization.Position("Position1",2011, Month.OCTOBER,2013, Month.OCTOBER, "Разработчик")
                         )));
 
         RESUME.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Institute", "http://Organization2.ru",
-                                new Organization.Position("aspirant", LocalDate.of(1996, Month.OCTOBER, 30),
-                                        LocalDate.of(2000, Month.OCTOBER, 30),
+                                new Organization.Position("aspirant",1996, Month.OCTOBER,2000, Month.OCTOBER,
                                         "aspirant"),
-                                new Organization.Position("student", LocalDate.of(1993, Month.OCTOBER, 30),
-                                        LocalDate.of(1996, Month.NOVEMBER, 30),
+                                new Organization.Position("student",1993, Month.OCTOBER,1996, Month.NOVEMBER,
                                         "student"))
                 ));
 

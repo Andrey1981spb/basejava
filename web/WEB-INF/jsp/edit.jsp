@@ -2,6 +2,7 @@
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page import="ru.javawebinar.basejava.model.MarkedListSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
+<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -44,26 +45,27 @@
                 </c:when>
 
                 <c:when test="${type=='EXPERIENCE'|| type=='EDUCATION'}">
-                    <dt>${type.title}</dt><br><br>
-                    <c:set var="organisationList" value="<%=((OrganizationSection)section).getWorkStudyStringDates()%>"/>
-                    <c:forEach var="organisation" items="${organisationList}" varStatus="count">
-                      <textarea name='${type}name' cols=40 rows=1>${organisation.homePage.name}</textarea><br>
-                        <textarea name='${type}url' cols=40 rows=1>${organisation.homePage.url}</textarea><br>
+                    <dt>${type.title}</dt><br>
+                    <c:forEach var="organisation" items="<%=((OrganizationSection) section).getWorkStudyStringDates()%>"
+                               varStatus="count">
+                        <input type="text" name='${type}' size=100 value="${organisation.homePage.name}"><br>
+                        <input type="text" name='${type}url' size=100 value="${organisation.homePage.url}"><br>
 
                         <c:forEach var="position" items="${organisation.positionList}">
                             <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                            'Название организации'<br>
                             <textarea name='${type}${count.index}title' cols=40 rows=1>${position.title}</textarea><br>
-                            'Дата поступления'<br>
-                            <textarea name='${type}${count.index}dateOfEntry' cols=40 rows=1>${position.dateOfEntry}</textarea><br>
-                            'Дата окончания'<br>
-                            <textarea name='${type}${count.index}dateOfExit' cols=40 rows=1>${position.dateOfExit}</textarea><br>
+                            Дата поступления<br>
+                            <input type="text" name='${type}${count.index}dateOfEntry' size=10
+                                   value="<%=DateUtil.format(position.getDateOfEntry())%>"><br>
+                            Дата окончания<br>
+                            <input type="text" name='${type}${count.index}dateOfExist' size=10
+                                   value="<%=DateUtil.format(position.getDateOfExit())%>"><br><br>
+                            'Описание'<br>
                             <textarea name='${type}${count.index}description' cols=40 rows=8>${position.description}</textarea><br><br>
                         </c:forEach>
 
-
                     </c:forEach>
-
-
 
                 </c:when>
 

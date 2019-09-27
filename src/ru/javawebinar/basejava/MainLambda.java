@@ -18,7 +18,6 @@ public class MainLambda {
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(partitioningBy(x -> x % 2 == 0, toList()));
         return map.get(map.get(false).size() % 2 != 0);
-
     }
 
     public static void main(String[] args) {
