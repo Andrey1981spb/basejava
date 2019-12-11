@@ -107,4 +107,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     public void setFullName(String fullName) {
         this.fullName=fullName;
     }
+
+    public void setSection(ContactType type, String value) {
+        contactInfoMap.put(type, value);
+    }
+
 }

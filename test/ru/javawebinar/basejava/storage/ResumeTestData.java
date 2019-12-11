@@ -31,8 +31,10 @@ public class ResumeTestData {
         RESUME.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
-                                new Organization.Position("Position2",2013, Month.OCTOBER,2019, Month.OCTOBER, "Автор проета"),
-                                new Organization.Position("Position1",2011, Month.OCTOBER,2013, Month.OCTOBER, "Разработчик")
+                                new Organization.Position("Position2",2013, Month.OCTOBER,2019, Month.OCTOBER,
+                                        "Автор проета"),
+                                new Organization.Position("Position1",2011, Month.OCTOBER,2013, Month.OCTOBER,
+                                        "Разработчик")
                         )));
 
         RESUME.addSection(SectionType.EDUCATION,

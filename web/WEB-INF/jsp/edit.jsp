@@ -59,7 +59,7 @@
                             <input type="text" name='${type}${count.index}dateOfEntry' size=10
                                    value="<%=DateUtil.format(position.getDateOfEntry())%>"><br>
                             Дата окончания<br>
-                            <input type="text" name='${type}${count.index}dateOfExist' size=10
+                            <input type="text" name='${type}${count.index}dateOfExit' size=10
                                    value="<%=DateUtil.format(position.getDateOfExit())%>"><br><br>
                             'Описание'<br>
                             <textarea name='${type}${count.index}description' cols=40 rows=8>${position.description}</textarea><br><br>
@@ -72,10 +72,6 @@
             </c:choose>
         </c:forEach>
 
-
-
-
-        <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
